@@ -1,0 +1,8 @@
+/* TEAM */
+	Author: Etienne Perot
+	Contact: etienne [at] perot.me
+
+/* SITE */
+	Language: English
+	Doctype: HTML5
+	IDE: Kate

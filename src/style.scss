@@ -1,0 +1,21 @@
+$bodyBackground: #131313;
+$contentBackground: #f6f6f6;
+$contentMargin: 2em;
+$contentPadding: 1em;
+
+body {
+	background: inline-image("img/background.png") $bodyBackground;
+}
+
+#main {
+	padding: $contentPadding;
+	margin: $contentMargin;
+	background: inline-image("img/content-background.png") $contentBackground;
+	border-radius: $contentPadding / 4;
+	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
+}
+
+footer {
+	text-align: center;
+	color: rgba(255, 255, 255, 0.25);
+}
