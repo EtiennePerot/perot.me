@@ -22,7 +22,7 @@ build-init:
 css:
 	while IFS= read -d $$'\0' -r file ; do \
 		echo Processing "$$file"; \
-		pyscss -S "`dirname "$$file"`" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
+		pyscss -S "`dirname "$$file"`" -I "`dirname "$$file"`" -I "$(BUILD_DIR)" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
 	done < <(find "$(BUILD_DIR)" -name '*.scss' -print0)
 
 js:
@@ -30,7 +30,8 @@ js:
 
 html:
 	while IFS= read -d $$'\0' -r file ; do \
-		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-http-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=advanced < "$$file" > "$$file.compressed"; then \
+		res/js-import.py "$$file"; \
+		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-http-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
 			echo "Success compressing $$file"; \
 			mv "$$file.compressed" "$$file"; \
 		else \
@@ -38,6 +39,7 @@ html:
 			rm -f "$$file.compressed"; \
 		fi; \
 		res/scss-import.py "$$file"; \
+		res/mark-compressed.py "$$file"; \
 	done < <(find "$(BUILD_DIR)" \( -name '*.htm' -o -name '*.html' -o -name '*.xhtml' \) -type f -print0)
 
 compress:

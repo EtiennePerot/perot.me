@@ -1,3 +1,5 @@
+@import "clearfix";
+
 $bodyBackground: #131313;
 $contentBackground: #f6f6f6;
 $contentMargin: 2em;
@@ -8,11 +10,28 @@ body {
 }
 
 #main {
+	@extend .clearfix;
 	padding: $contentPadding;
 	margin: $contentMargin;
 	background: inline-image("img/content-background.png") $contentBackground;
 	border-radius: $contentPadding / 4;
 	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
+}
+
+#contact {
+	float: right;
+}
+
+.pgp-fingerprint {
+	white-space: nowrap;
+	overflow: auto;
+	border: none;
+	padding: 0em;
+	background: none transparent;
+}
+
+.pgp-fingerprint, .email-replace {
+	font-family: monospace;
 }
 
 footer {
