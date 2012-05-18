@@ -1,40 +1,82 @@
 @import "clearfix";
 
+@option compress: no; /* TEMP - REMOVE ME */
+
 $bodyBackground: #131313;
 $contentBackground: #f6f6f6;
 $contentMargin: 2em;
 $contentPadding: 1em;
+$contentColor: #060606;
+$webIcons: sprite-map("/img/icons/*.png");
+$footerColor: rgba(192, 192, 192, 0.5);
+$torHiddenServiceColor: #002000;
+$linkHoverOpacify: 0.5;
 
 body {
-	background: inline-image("img/background.png") $bodyBackground;
+	background: inline-image("/img/background.png") $bodyBackground;
+}
+
+a {
+	font-weight: bold;
+	text-decoration: none;
 }
 
 #main {
 	@extend .clearfix;
 	padding: $contentPadding;
 	margin: $contentMargin;
-	background: inline-image("img/content-background.png") $contentBackground;
+	background: inline-image("/img/content-background.png") $contentBackground;
 	border-radius: $contentPadding / 4;
 	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
 }
 
 #contact {
 	float: right;
+	dt {
+		font-weight: bold;
+		margin-top: 0.5em;
+		margin-bottom: 0.25em;
+	}
+	dt:after {
+		content: ":";
+	}
+	dd {
+		maring-top: 0.25em;
+		maring-bottom: 0.5em;
+	}
+	ul {
+		margin: 0em;
+		padding: 0em;
+		li {
+			list-style-type:none;
+			padding: 0.25em;
+		}
+	}
 }
 
-.pgp-fingerprint {
-	white-space: nowrap;
-	overflow: auto;
-	border: none;
-	padding: 0em;
-	background: none transparent;
-}
-
-.pgp-fingerprint, .email-replace {
-	font-family: monospace;
+@each $icon in sprites($webIcons) {
+	span.icon-#{$icon} {
+		display: inline-block;
+		background: $webIcons;
+		width: image-width(sprite-file($webIcons, $icon));
+		height: image-height(sprite-file($webIcons, $icon));
+		background-position: sprite-position($webIcons, $icon);
+	}
 }
 
 footer {
 	text-align: center;
-	color: rgba(255, 255, 255, 0.25);
+	color: $footerColor;
+	a {
+		color: $footerColor;
+	}
+	a:hover {
+		color: opacify($footerColor, $linkHoverOpacify);
+	}
+	.tor-hidden-service {
+		color: $footerColor + $torHiddenServiceColor;
+	}
+	.tor-hidden-service:hover {
+		color: opacify($footerColor + $torHiddenServiceColor, $linkHoverOpacify);
+	}
 }

@@ -8,6 +8,10 @@
 SHELL = bash
 SRC_DIR = src
 BUILD_DIR = build
+STATIC_URL = /img/
+ASSETS_URL = $(STATIC_URL)assets/
+STATIC_DIR = $(BUILD_DIR)$(STATIC_URL)
+ASSETS_DIR = $(BUILD_DIR)$(ASSETS_URL)
 DEPLOY_URL = perot@perot.me:www-test
 DEPLOY_PERMISSIONS = 750
 
@@ -22,7 +26,7 @@ build-init:
 css:
 	while IFS= read -d $$'\0' -r file ; do \
 		echo Processing "$$file"; \
-		pyscss -S "`dirname "$$file"`" -I "`dirname "$$file"`" -I "$(BUILD_DIR)" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
+		res/pyscss-monkeypatch.py -S "`dirname "$$file"`" -I "`dirname "$$file"`" -I "$(BUILD_DIR)" -A "$(ASSETS_DIR)" --static-url "$(STATIC_URL)" --assets-url "$(ASSETS_URL)" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
 	done < <(find "$(BUILD_DIR)" -name '*.scss' -print0)
 
 js:
@@ -32,11 +36,11 @@ html:
 	while IFS= read -d $$'\0' -r file ; do \
 		res/js-import.py "$$file"; \
 		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-http-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
-			echo "Success compressing $$file"; \
 			mv "$$file.compressed" "$$file"; \
+			echo "Success compressing $$file"; \
 		else \
-			echo "Failed compressing $$file"; \
 			rm -f "$$file.compressed"; \
+			echo "Failed compressing $$file"; \
 		fi; \
 		res/scss-import.py "$$file"; \
 		res/mark-compressed.py "$$file"; \

@@ -1,10 +1,10 @@
 import('http://code.jquery.com/jquery.min.js');
 
-pgpWidget = {
+emailReplace = {
 	init: function() {
-		$('.pgp-fingerprint').attr('wrap', 'off').click(function(){
-			$(this).select();
+		$('.email-replace').each(function() {
+			$(this).text($(this).text().replace(/(\S+)\s+at\s+(\S+)\s+dot\s+(\S+)/gi, '$1@$2.$3')).wrapInner('<a href="mailto:' + $(this).text() + '"/>');
 		});
 	}
 };
-$(pgpWidget.init);
+$(emailReplace.init);
