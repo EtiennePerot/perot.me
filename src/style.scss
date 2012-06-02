@@ -1,7 +1,5 @@
 @import "clearfix";
 
-@option compress: no; /* TEMP - REMOVE ME */
-
 $bodyBackground: #131313;
 $contentBackground: #f6f6f6;
 $contentMargin: 2em;
@@ -28,10 +26,16 @@ a {
 	background: inline-image("/img/content-background.png") $contentBackground;
 	border-radius: $contentPadding / 4;
 	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
+	h1 {
+		font-size: 2em;
+	}
 }
 
 #contact {
 	float: right;
+	padding-left: 1.5em;
+	padding-right: 1em;
+	border-left: 1px solid #CCCCCC;
 	dt {
 		font-weight: bold;
 		margin-top: 0.5em;
@@ -61,6 +65,7 @@ a {
 		width: image-width(sprite-file($webIcons, $icon));
 		height: image-height(sprite-file($webIcons, $icon));
 		background-position: sprite-position($webIcons, $icon);
+		padding-right: 0.1em;
 	}
 }
 

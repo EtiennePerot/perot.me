@@ -35,7 +35,7 @@ js:
 html:
 	while IFS= read -d $$'\0' -r file ; do \
 		res/js-import.py "$$file"; \
-		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-http-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
+		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
 			mv "$$file.compressed" "$$file"; \
 			echo "Success compressing $$file"; \
 		else \
