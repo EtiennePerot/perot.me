@@ -2,78 +2,19 @@
 <html lang="en-us">
 	<head>
 		<title>Etienne Perot</title>
-		<meta charset="utf-8" />
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-		<link rel="openid.server" href="https://www.myopenid.com/server" />
-		<link rel="openid.delegate" href="https://EtiennePerot.myopenid.com/" />
-		<link rel="openid2.local_id" href="https://EtiennePerot.myopenid.com" />
-		<link rel="openid2.provider" href="https://www.myopenid.com/server" />
-		<meta http-equiv="X-XRDS-Location" content="http://www.myopenid.com/xrds?username=EtiennePerot.myopenid.com" />
-		<link rel="author" type="text/plain" href="/humans.txt" />
-		<script>
-			import('main.js');
-		</script>
-		<style>
-			@import "style.scss";
-		</style>
+		<include>head.include.html</include>
+		<include>openid.include.html</include>
 	</head>
 	<body>
-		<section id="main">
-			<aside id="contact">
-				<header>
-					<h2><span class="icon-identity"></span> Contact information</h2>
-				</header>
-				<dl>
-					<dt><span class="icon-mail"></span> Email</dt>
-					<dd class="email-replace">etienne at perot dot me</dd>
-					<dt><span class="icon-pgp"></span> PGP information</dt>
-					<dd>
-						<ul>
-							<li><span class="icon-publickey"></span>&nbsp;<strong>Public key</strong>: <a href="/pgp.asc">pgp.asc</a></li>
-							<li><span class="icon-fingerprint"></span>&nbsp;<strong>Fingerprint</strong>: <a href="http://pgp.mit.edu:11371/pks/lookup?op=get&amp;search=0x5CFC3B88974EE250" class="pgp-fingerprint">974E E250</a></li>
-						</ul>
-					</dd>
-					<dt><span class="icon-projects"></span> My projects are mirrored on</dt>
-					<dd>
-						<ul>
-							<li><a href="https://github.com/EtiennePerot"><span class="icon-github"></span> GitHub</a></li>
-							<li><a href="https://bitbucket.org/EtiennePerot"><span class="icon-bitbucket"></span> Bitbucket</a></li>
-						</ul>
-					</dd>
-					<dt><span class="icon-web"></span> Find me on</dt>
-					<dd>
-						<ul>
-							<li><a href="https://www.linkedin.com/in/etienneperot"><span class="icon-linkedin"></span> LinkedIn</a></li>
-						</ul>
-					</dd>
-				</dl>
-			</aside>
-			<header>
-				<h1>Etienne Perot</h1>
-			</header>
-			<section id="education">
-				<header>
-					<h2>Education</h2>
-				</header>
-				<p>
-					<h3>McGill University <span class="date"></span></h3>
-					<ul>
-						<li>Bachelor of Science in Software Engineering</li>
-						<li>
-							<h4>Projects</h4>
-							<ul>
-								<li>everVoid</li>
-								<li>fetchy</li>
-							</ul>
-						</li>
-					</ul>
-				</p>
-			</section>
-		</section>
-		<footer>
-			<p>Code and design by Etienne Perot</p>
-			<p>Icons from the <a href="http://www.oxygen-icons.org/">Oxygen Project</a></p>
-			<p>This website is available as a <a href="https://www.torproject.org">Tor</a>&nbsp;<a href="https://www.torproject.org/docs/hidden-services.html.en">Hidden Service</a> at <a href="http://b6numryz77fa2bpp.onion/" class="tor-hidden-service" rel="nofollow"><span class="icon-tor"></span>b6numryz77fa2bpp.onion</a></p>
-		</footer>
+		<div id="main">
+			<include>nav.include.html</include>
+			<include>sidebar.include.html</include>
+			<div id="content">
+				<section id="blog-content">
+					<exec>blog.py --homepage</exec>
+				</section>
+			</div>
+		</div>
+		<include>footer.include.html</include>
 	</body>
 </html>

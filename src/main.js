@@ -1,9 +1,19 @@
-import('http://code.jquery.com/jquery.min.js');
+js_import('http://code.jquery.com/jquery.min.js');
 
 emailReplace = {
 	init: function() {
 		$('.email-replace').each(function() {
-			$(this).text($(this).text().replace(/(\S+)\s+at\s+(\S+)\s+dot\s+(\S+)/gi, '$1@$2.$3')).wrapInner('<a href="mailto:' + $(this).text() + '"/>');
+			var email = $(this).text().replace(/^\s+|\s+$/g, '');
+			var label = null;
+			if(email.indexOf('<') != -1 && email.indexOf('>') != -1) {
+				label = email.substring(0, email.indexOf('<')).replace(/^\s+|\s+$/g, '');
+				email = email.substring(email.indexOf('<') + 1, email.indexOf('>')).replace(/^\s+|\s+$/g, '');
+			}
+			email = email.replace(/\s*\(?dot\)?\s*/gi, '.').replace(/\s*\(?at\)?\s*/gi, '@');
+			if(label == null) {
+				label = email;
+			}
+			$(this).empty().append($('<a/>').attr('href', 'mailto:' + email).text(label));
 		});
 	}
 };

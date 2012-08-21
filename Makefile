@@ -12,16 +12,21 @@ STATIC_URL = /img/
 ASSETS_URL = $(STATIC_URL)assets/
 STATIC_DIR = $(BUILD_DIR)$(STATIC_URL)
 ASSETS_DIR = $(BUILD_DIR)$(ASSETS_URL)
-DEPLOY_URL = perot@perot.me:www-test
+DEPLOY_URL = perot@perot.me:www
 DEPLOY_PERMISSIONS = 750
+HTML_FILTERS_BEFORE_COMPRESSION = +process-exec +process-include +js-import +scss-import +resource-hash
+HTML_FILTERS_AFTER_COMPRESSION = +mark-compressed
 
 all: clean build compress chmod deploy
 
-build: build-init css js html
+build: build-init blog css html
 
 build-init:
 	mkdir -p "$(BUILD_DIR)"
 	rsync -rqhupXt --exclude=".git" --exclude="*.gz" --delete-after "$(SRC_DIR)/" "$(BUILD_DIR)/"
+
+blog:
+	"$(BUILD_DIR)/blog.py" --make
 
 css:
 	while IFS= read -d $$'\0' -r file ; do \
@@ -29,21 +34,17 @@ css:
 		res/pyscss-monkeypatch.py -S "`dirname "$$file"`" -I "`dirname "$$file"`" -I "$(BUILD_DIR)" -A "$(ASSETS_DIR)" --static-url "$(STATIC_URL)" --assets-url "$(ASSETS_URL)" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
 	done < <(find "$(BUILD_DIR)" -name '*.scss' -print0)
 
-js:
-	# TODO
-
 html:
 	while IFS= read -d $$'\0' -r file ; do \
-		res/js-import.py "$$file"; \
+		echo "Processing $$file"; \
+		res/filefilter.py $(HTML_FILTERS_BEFORE_COMPRESSION) "$$file"; \
 		if htmlcompressor --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
 			mv "$$file.compressed" "$$file"; \
-			echo "Success compressing $$file"; \
 		else \
 			rm -f "$$file.compressed"; \
-			echo "Failed compressing $$file"; \
+			echo "Failed compressing $$file" 1>&2; \
 		fi; \
-		res/scss-import.py "$$file"; \
-		res/mark-compressed.py "$$file"; \
+		res/filefilter.py $(HTML_FILTERS_AFTER_COMPRESSION) "$$file"; \
 	done < <(find "$(BUILD_DIR)" \( -name '*.htm' -o -name '*.html' -o -name '*.xhtml' \) -type f -print0)
 
 compress:
@@ -61,7 +62,7 @@ chmod:
 	chmod -R "$(DEPLOY_PERMISSIONS)" "$(BUILD_DIR)"
 
 deploy:
-	rsync -rzvvhupXct --exclude=".git" --delete-after --progress "$(BUILD_DIR)/" "$(DEPLOY_URL)/"
+	rsync -rzvvhupXct --exclude=".git" --exclude-from=".gitignore" --delete-after --progress "$(BUILD_DIR)/" "$(DEPLOY_URL)/"
 
 clean:
 	rm -rf "$(BUILD_DIR)"

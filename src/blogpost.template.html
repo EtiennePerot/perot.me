@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title>Etienne Perot — %title%</title>
+		<include>head.include.html</include>
+		%extrafonts%
+	</head>
+	<body>
+		<div id="main">
+			<include>nav.include.html</include>
+			<include>sidebar.include.html</include>
+			<div id="content">
+				<article>
+					<header>
+						<h1>%title%</h1>
+						<h2>
+							<aside class="markdownlink">
+								<a href="%mdurl%">View this article as markdown</a>
+							</aside>
+							By <span class="author email-replace">%author%</span> on <span class="date">%date%</span>.
+						</h2>
+					</header>
+					<div class="thumbnail">
+						<a href="%thumbnailurl%"><img src="%thumbnail%" alt="%title%" title="%title%"/></a>
+					</div>
+					%content%
+					<footer>
+						<p class="license"><strong>License</strong>: %license%</p>
+					</footer>
+				</article>
+			</div>
+		</div>
+		<include>footer.include.html</include>
+	</body>
+</html>

@@ -1,59 +1,200 @@
 @import "clearfix";
+@import "open-sans.css";
 
 $bodyBackground: #131313;
+$bodyFontFamily: 'Open Sans', sans-serif;
+$bodyFontSize: 11pt;
+$dividerColor: #cccccc;
+$titleFontSize: 1.5em;
 $contentBackground: #f6f6f6;
 $contentMargin: 2em;
 $contentPadding: 1em;
 $contentColor: #060606;
+$codeBackgroundColor: #e9e9e9;
+$codeFontFamily: 'inconsolata-dz', monospace;
+$mainMaximumWidth: 64em;
+$sidebarWidth: 16em;
+$sidebarMargin: 2em;
+$sidebarPaddingLeft: 1.5em;
+$sidebarPaddingRight: 1em;
+$contentMaximumWidth: $mainMaximumWidth - $sidebarWidth - $sidebarMargin - (2 * $contentPadding);
 $webIcons: sprite-map("/img/icons/*.png");
 $footerColor: rgba(192, 192, 192, 0.5);
 $torHiddenServiceColor: #002000;
+$linkColor: #504040;
+$linkHoverColorChange: #400000;
 $linkHoverOpacify: 0.5;
 
 body {
 	background: inline-image("/img/background.png") $bodyBackground;
+	font-family: $bodyFontFamily;
+	font-size: $bodyFontSize;
 }
 
 a {
 	font-weight: bold;
 	text-decoration: none;
+	color: $linkColor;
+}
+
+a:hover {
+	color: $linkColor + $linkHoverColorChange;
+}
+
+img {
+	border-width: 0em;
+}
+
+pre {
+	white-space: pre-wrap;
+	padding: 1em;
+	border: 1px inset $codeBackgroundColor + #0c0c0c;
+	background: $codeBackgroundColor;
+	* {
+		white-space: pre-wrap;
+	}
+	code {
+		font-family: $codeFontFamily;
+		font-size: 9.5pt;
+	}
 }
 
 #main {
 	@extend .clearfix;
+	max-width: $mainMaximumWidth;
 	padding: $contentPadding;
-	margin: $contentMargin;
+	margin-left: auto;
+	margin-top: $contentMargin;
+	margin-right: auto;
+	margin-top: $contentMargin;
 	background: inline-image("/img/content-background.png") $contentBackground;
 	border-radius: $contentPadding / 4;
 	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
-	h1 {
-		font-size: 2em;
+	#header {
+		height: $titleFontSize;
+		position: relative;
+		border-bottom: 1px solid $dividerColor;
+		padding-bottom: 1em;
+		margin-bottom: 1em;
+		header {
+			display: block;
+			position: absolute;
+			bottom: 0.5em;
+			left: 0em;
+			h1 {
+				margin: 0em;
+				font-size: $titleFontSize;
+				cursor: default;
+			}
+		}
+		nav {
+			display: block;
+			position: absolute;
+			bottom: 0.5em;
+			right: 0em;
+			ul {
+				margin: 0em;
+				padding: 0em;
+				li {
+					display: inline;
+					margin: 0em;
+					padding-left: 1.5em;
+					padding-right: 1.5em;
+					border-left: 1px solid $dividerColor;
+				}
+				li:first-child {
+					border-left: none;
+				}
+			}
+		}
 	}
-}
-
-#contact {
-	float: right;
-	padding-left: 1.5em;
-	padding-right: 1em;
-	border-left: 1px solid #CCCCCC;
-	dt {
-		font-weight: bold;
-		margin-top: 0.5em;
-		margin-bottom: 0.25em;
+	#contact {
+		float: right;
+		width: $sidebarWidth;
+		padding-left: $sidebarPaddingLeft;
+		padding-right: $sidebarPaddingRight;
+		margin-left: $sidebarMargin;
+		border-left: 1px solid $dividerColor;
+		h2 {
+			font-size: 1.2em;
+		}
+		dt {
+			font-weight: bold;
+			margin-top: 0.5em;
+			margin-bottom: 0.25em;
+		}
+		dt:after {
+			content: ":";
+		}
+		dd {
+			maring-top: 0.25em;
+			maring-bottom: 0.5em;
+			margin-left: 1.25em;
+		}
+		ul {
+			margin: 0em;
+			padding: 0em;
+			li {
+				list-style-type:none;
+				padding: 0.25em;
+			}
+		}
 	}
-	dt:after {
-		content: ":";
-	}
-	dd {
-		maring-top: 0.25em;
-		maring-bottom: 0.5em;
-	}
-	ul {
-		margin: 0em;
-		padding: 0em;
-		li {
-			list-style-type:none;
-			padding: 0.25em;
+	#content {
+		max-width: $contentMaximumWidth;
+		article {
+			display: block;
+			margin: 0em;
+			padding-top: 1em;
+			padding-bottom: 1em;
+			header h1 {
+				font-size: 1.25em;
+				margin: 0em;
+			}
+			header h2 {
+				font-size: 0.7em;
+				margin-top: 0.5em;
+				color: #909090;
+			}
+			.author, .date {
+				font-weight: bold;
+			}
+			aside.markdownlink {
+				float: right;
+				color: #6c6c6c; /* Affects a:before and a:after */
+				a {
+					color: #6c6c6c;
+				}
+				a:hover {
+					color: #6c6c6c + $linkHoverColorChange;
+				}
+				a:before {
+					content: "[";
+				}
+				a:after {
+					content: "]";
+				}
+			}
+			.thumbnail {
+				margin-top: 1em;
+				margin-bottom: 1em;
+				* {
+					display: block;
+					margin-left: auto;
+					margin-right: auto;
+				}
+			}
+			footer {
+				font-size: .85em;
+				color: #606060;
+				font-style: italic;
+			}
+			footer.readmore {
+				font-size: .95em;
+			}
+		}
+		article:first-child {
+			padding-top: 0em;
 		}
 	}
 }
@@ -69,7 +210,7 @@ a {
 	}
 }
 
-footer {
+body > footer {
 	text-align: center;
 	color: $footerColor;
 	a {
@@ -83,5 +224,8 @@ footer {
 	}
 	.tor-hidden-service:hover {
 		color: opacify($footerColor + $torHiddenServiceColor, $linkHoverOpacify);
+	}
+	.loadfast-notice {
+		opacity: .4;
 	}
 }

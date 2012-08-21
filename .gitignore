@@ -3,3 +3,4 @@ build
 *.pyo
 .directory
 *~
+__pycache__
