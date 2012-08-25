@@ -15,11 +15,11 @@ ASSETS_DIR = $(BUILD_DIR)$(ASSETS_URL)
 DEPLOY_URL = perot@perot.me:www
 DEPLOY_PERMISSIONS = 750
 HTML_FILTERS_BEFORE_COMPRESSION = +process-exec +process-include +js-import +scss-import +resource-hash
-HTML_FILTERS_AFTER_COMPRESSION = +mark-compressed
+HTML_FILTERS_AFTER_COMPRESSION = +fix-openid +mark-compressed
 
 all: clean build compress chmod deploy
 
-build: build-init blog css html
+build: build-init blog css html cv
 
 build-init:
 	mkdir -p "$(BUILD_DIR)"
@@ -27,6 +27,9 @@ build-init:
 
 blog:
 	"$(BUILD_DIR)/blog.py" --make
+
+cv:
+	cat "$(BUILD_DIR)/cv.md" | sed 's/ (at) /@/g' | sed 's/ (dot) /./g' | pandoc --latex-engine xelatex -V mainfont="Open Sans" -V linkcolor=black -V urlcolor=black -H "$(BUILD_DIR)/cv.sty" -o "$(BUILD_DIR)/cv.pdf"
 
 css:
 	while IFS= read -d $$'\0' -r file ; do \
@@ -53,7 +56,6 @@ compress:
 	done < <(find "$(BUILD_DIR)" -name '*.gz' -type f -print0)
 	while IFS= read -d $$'\0' -r file ; do \
 		if [ ! -f "$$file.gz" -o "$$file.gz" -ot "$$file" ]; then \
-			echo gzip -cn9 < "$$file" > "$$file.gz"; \
 			gzip -cn9 < "$$file" > "$$file.gz"; \
 		fi; \
 	done < <(find "$(BUILD_DIR)" ! -name '*.gz' -type f -print0)

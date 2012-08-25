@@ -3,19 +3,41 @@ Etienne Perot
 
 Montreal, Quebec, Canada
 
-[https://perot.me/][Etienne Perot] — <span class="email-replace">etienne at perot dot me</span> (**PGP**: [974E E250][PGP key])
+[https://perot.me/][Etienne Perot] — <span class="email-replace">etienne (at) perot (dot) me</span> (**PGP**: [974E E250][PGP key])
 
 Software engineer with an interest in various topics including computer networking, security, data visualization, 3D graphics, and who also enjoys Linux server administration. Fluent in French (native) and English.
 
-Education
----------
-* **Bachelor of Science in Software Engineering** (_2009 — present_)  
-  **[McGill University]**, Montreal, Quebec  
-  _GPA_: TODO
+Skills
+------
+* **Programming languages**: Extensive knowledge of [Python] (_as a programming language_), [Java], [PHP], [SQL]; working knowledge of [C] and [C++].
+* **Scripting languages**: Extensive knowledge of [Python] (_as a scripting language_) and [Bash].
+* **Web development**: Extensive knowledge of [JavaScript], [jQuery], [Ajax], [HTML] ([XHTML] and [HTML5]), [CSS].
+* **Libraries/Engines**: Extensive knowledge of [FUSE] (C library and its bindings), [Qt] (C++ library and its bindings), [jMonkeyEngine 3], [JNA], [iText].
+* **Version control systems**: [Git], [Mercurial], [Subversion].
+* **Software**: Extensive knowledge of [Linux] (and Unix in general), [MySQL], [nginx], [php-fpm], [Dovecot].
 
-* **Baccalaurat Français Scientifique** (_general French Baccalaureate, Sciences stream_) (_2007 — 2009_)  
-  **[College Stanislas]**, Montreal, Quebec  
-  Received highest honours (Mention "très bien")
+Projects
+--------
+* **[everVoid]** (_Open-source, [CC-BY-3.0 license] (Creative Commons Attribution 3.0 Unported)_)  
+  A full-fledged, turn-based, multiplayer, cross-platform strategy space game written in Java, started as part of a school project.  
+  _Technologies used_: [Java], [jMonkeyEngine 3], [OpenGL], [GLSL].  
+  _Team_: [Valentin Bonnet], [Pier-Luc Gagnon], [Laura Leclerc] (artist), [Etienne Perot]
+* **[SrcDemo2]** (_Open-source, [BSD license]_)  
+  A cross-platform desktop application that creates a virtual filesystem in a Source engine-based game's directory, forcing the rendering engine to bypass the disk entirely in order to speed up rendering and smooth rendered frames.  
+  This allows game movie creators to produce very high-quality videos without expensive software other than the game itself.  
+  _Technologies used_: [Java], [Qt-Jambi] (Java bindings for [Qt]), [fuse-jna], [Valve Source engine].
+* **[fuse-jna]** (_Open-source, [BSD license]_)  
+  Java bindings library to the FUSE kernel module for Linux, FreeBSD, and Mac OS X.  
+  This allows the user to write custom filesystems using Java only, without having to worry about the operating system kernel.  
+  _Technologies used_: [Java], [JNA], [FUSE], [fuse4x], [OSXFUSE], [MacFUSE].
+* **[DamnVid]** (_Open-source, [GPLv3 license]_)  
+  A cross-platform desktop application that downloads and converts videos from the local disk or from video streaming websites.  
+  _Technologies used_: [Python], [wxPython] (Python bindings to [wxWidgets]), [ffmpeg].
+
+A lot of other, smaller projects, using various programming languages and all open-source, are available online:
+
+* **GitHub**: [https://github.com/EtiennePerot][GitHub]
+* **Bitbucket**: [https://bitbucket.org/EtiennePerot][Bitbucket]
 
 Employment
 ----------
@@ -36,37 +58,15 @@ Employment
   Wrote the frontend and the backend of an internal web application used to manage patients' information, track their visits, payments, and changes in patients' health.  
   _Technologies used_: [PHP], [MySQL], [JavaScript], [Ajax], [Google Data APIs], [CSS], [HTML].
 
-Projects
---------
-* **[everVoid]** (_Open-source, [CC-BY-3.0 license] (Creative Commons Attribution 3.0 Unported)_)  
-  A full-fledged, turn-based, multiplayer, cross-platform strategy space game written in Java, started as part of a school project.  
-  _Technologies used_: [Java], [jMonkeyEngine 3], [OpenGL], [GLSL].  
-  _Team_: [Valentin Bonnet], [Pier-Luc Gagnon], [Laura Leclerc] (artist), [Etienne Perot]
-* **[SrcDemo²]** (_Open-source, [BSD license]_)  
-  A cross-platform desktop application that creates a virtual filesystem in a Source engine-based game's directory, forcing the rendering engine to bypass the disk entirely in order to speed up rendering and smooth rendered frames.  
-  This allows game movie creators to produce very high-quality videos without expensive software other than the game itself.  
-  _Technologies used_: [Java], [Qt-Jambi] (Java bindings for [Qt]), [fuse-jna], [Valve Source engine].
-* **[fuse-jna]** (_Open-source, [BSD license]_)  
-  Java bindings library to the FUSE kernel module for Linux, FreeBSD, and Mac OS X.  
-  This allows the user to write custom filesystems using Java only, without having to worry about the operating system kernel.  
-  _Technologies used_: [Java], [JNA], [FUSE], [fuse4x], [OSXFUSE], [MacFUSE].
-* **[DamnVid]** (_Open-source, [GPLv3 license]_)  
-  A cross-platform desktop application that downloads and converts videos from the local disk or from video streaming websites.  
-  _Technologies used_: [Python], [wxPython] (Python bindings to [wxWidgets]), [ffmpeg].
+Education
+---------
+* **Bachelor of Science in Software Engineering** (_2009 — present_)  
+  **[McGill University]**, Montreal, Quebec  
+  _GPA_: TODO
 
-A lot of other, smaller projects, using various programming languages and all open-source, are available online:
-
-* **GitHub**: [https://github.com/EtiennePerot][GitHub]
-* **Bitbucket**: [https://bitbucket.org/EtiennePerot][Bitbucket]
-
-Skills
-------
-* **Programming languages**: Extensive knowledge of [Python] (_as a programming language_), [Java], [PHP], [SQL]; working knowledge of [C] and [C++].
-* **Scripting languages**: Extensive knowledge of [Python] (_as a scripting language_) and [Bash].
-* **Web development**: Extensive knowledge of [JavaScript], [jQuery], [Ajax], [HTML] ([XHTML] and [HTML5]), [CSS].
-* **Libraries/Engines**: Extensive knowledge of [FUSE] (C library and its bindings), [Qt] (C++ library and its bindings), [jMonkeyEngine 3], [JNA], [iText].
-* **Version control systems**: [Git], [Mercurial], [Subversion].
-* **Software**: Extensive knowledge of [Linux] (and Unix in general), [MySQL], [nginx], [php-fpm], [Dovecot].
+* **Baccalaurat Français Scientifique** (_general French Baccalaureate, Sciences stream_) (_2007 — 2009_)  
+  **[College Stanislas]**, Montreal, Quebec  
+  Received highest honours (Mention "très bien")
 
 
 [McGill University]: https://www.mcgill.ca/
@@ -117,7 +117,7 @@ Skills
 [php-fpm]: http://php-fpm.org/
 [Dovecot]: http://dovecot.org/
 [everVoid]: https://github.com/EtiennePerot/evervoid
-[SrcDemo²]: https://srcdemo2.googlecode.com/
+[SrcDemo2]: https://srcdemo2.googlecode.com/
 [fuse-jna]: https://github.com/EtiennePerot/fuse-jna
 [DamnVid]: https://damnvid.googlecode.com/
 [Valentin Bonnet]: http://www.linkedin.com/in/valentinbonnet
