@@ -26,7 +26,7 @@ build-init:
 	rsync -rqhupXt --exclude=".git" --exclude="*.gz" --delete-after "$(SRC_DIR)/" "$(BUILD_DIR)/"
 
 blog:
-	"$(BUILD_DIR)/blog.py" --make
+	"$(BUILD_DIR)/blog/blog.py" --make
 
 cv:
 	cat "$(BUILD_DIR)/cv.md" | sed 's/ (at) /@/g' | sed 's/ (dot) /./g' | pandoc --latex-engine xelatex -V mainfont="Open Sans" -V linkcolor=black -V urlcolor=black -H "$(BUILD_DIR)/cv.sty" -o "$(BUILD_DIR)/cv.pdf"

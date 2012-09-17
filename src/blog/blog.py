@@ -8,27 +8,35 @@ blogInfo = {
 	'author_email': 'etienne at perot dot me',
 	'author_link': 'https://perot.me/'
 }
-postsDir = 'posts'
+filesystemPostsDir = '../posts'
 postsUrl = ''
+postsAbsoluteUrl = 'https://perot.me'
 postsResourceUrl = '/posts-img'
 thumbFilename = 'thumb.png'
 licenseDir = 'licenses'
 templateFile = 'blogpost.template.html'
 excerptTemplateFile = 'blogpost-excerpt.template.html'
-atomFile = 'posts.atom'
-rss2File = 'posts.rss2'
+atomFile = '../posts.atom'
+rss2File = '../posts.rss2'
 breakMark = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
 codeBreakMark = '~--~'
+pygmentsStyle = 'manni'
 
+_pygments_mod = __import__('pygments-bashsession-monkeypatch') # Patch pygment's bash session lexer
 import os, sys, datetime, html, re, markdown
 import xmldefs
+from mannimod import ManniStyle_mod
 
 os.chdir(os.path.dirname(sys.argv[0]))
 
 def md(extensions=[], extension_configs={}, **kwargs):
 	keywordargs = {
 		'extensions': ['codehilite', 'meta', 'sane_lists'] + extensions,
-		'extensions_configs': {},
+		'extensions_configs': {
+			'codehilite': [
+				('style', pygmentsStyle)
+			]
+		},
 		'output_format': 'html5',
 		'smart_emphasis': True
 	}
@@ -82,15 +90,25 @@ class Post:
 		return self.date
 	def getPrintableDate(self):
 		return str(self.date)
-	def getUrl(self):
+	def getUrl(self, full=True):
+		if full:
+			return postsAbsoluteUrl + self.url
 		return self.url
 	def getUrlMd(self):
 		return self.url + '.md'
-	def getContent(self):
+	def getContent(self, withThumbnail=False, fullThumnail=False):
+		if withThumbnail:
+			if self.thumbUrl is not None:
+				return '<p><a href="' + html.escape(self.getThumbUrl(full=fullThumnail)) + '"><img src="' + html.escape(self.getThumb(full=fullThumnail)) + '" title="' + html.escape(self.getTitle()) + '" alt="' + html.escape(self.getTitle()) + '"/></a></p>' + self.content
+			return '<p><img src="' + html.escape(self.getThumb(full=fullThumnail)) + '" title="' + html.escape(self.getTitle()) + '" alt="' + html.escape(self.getTitle()) + '"/></p>' + self.content
 		return self.content
-	def getThumb(self):
+	def getThumb(self, full=False):
+		if full:
+			return postsAbsoluteUrl + self.thumb
 		return self.thumb
-	def getThumbUrl(self):
+	def getThumbUrl(self, full=False):
+		if full:
+			return postsAbsoluteUrl + self.thumbUrl
 		return self.thumbUrl
 	def hasCode(self):
 		return self.hasCodeTag
@@ -116,8 +134,8 @@ def substTemplate(template, p):
 	if p.hasCode():
 		if p.hasCodeLanguages():
 			from pygments.formatters import HtmlFormatter
-			highlightCss = HtmlFormatter().get_style_defs('.codehilite')
-			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
+			highlightCss = HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite')
+			content = content.replace('%extracss%', '<style>@import "inconsolata.css";\n' + highlightCss + '\n</style>')
 		else:
 			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
 	else:
@@ -132,10 +150,10 @@ if '--homepage' in sys.argv[1:]:
 	template = templateF.read(-1)
 	templateF.close()
 	posts = []
-	for p in os.listdir(postsDir):
+	for p in os.listdir(filesystemPostsDir):
 		if p[-3:].lower() != '.md':
 			continue
-		f = open(postsDir + os.sep + p, 'r', encoding='utf8')
+		f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
 		content = f.read(-1)
 		f.close()
 		# Extract excerpt
@@ -149,23 +167,35 @@ if '--homepage' in sys.argv[1:]:
 				excerpt +=  l + '\n'
 		posts.append(Post(excerpt, p[:-3]))
 	posts.sort(key = lambda p : p.getDate(), reverse=True)
-	for p in posts:
-		print(substTemplate(template, p))
+	if '--css' in sys.argv[1:]:
+		hasCode = False
+		hasCodeLanguages = False
+		for p in posts:
+			hasCode = hasCode or p.hasCode()
+			hasCodeLanguages = hasCodeLanguages or hasCode or p.hasCodeLanguages()
+		if hasCode:
+			print('@import "inconsolata.css";')
+		if hasCodeLanguages:
+			from pygments.formatters import HtmlFormatter
+			print(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
+	else:
+		for p in posts:
+			print(substTemplate(template, p))
 
 if '--make' in sys.argv[1:]:
 	templateF = open(templateFile, 'r', encoding='utf8')
 	template = templateF.read(-1)
 	templateF.close()
 	feedEntries = []
-	for p in os.listdir(postsDir):
+	for p in os.listdir(filesystemPostsDir):
 		if p[-3:].lower() != '.md':
 			continue
-		f = open(postsDir + os.sep + p, 'r', encoding='utf8')
+		f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
 		content = f.read(-1)
 		f.close()
 		content = content.replace('\n' + breakMark + '\n', '') # Strip break mark
 		post = Post(content, p[:-3])
-		f2 = open(postsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
+		f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
 		f2.write(substTemplate(template, post))
 		f2.close()
 		feedEntries.append({
@@ -173,8 +203,8 @@ if '--make' in sys.argv[1:]:
 			'author': post.getAuthor(),
 			'author-name': post.getAuthorName(),
 			'author-email': post.getAuthorEmail(),
-			'content': post.getContent(),
-			'url': post.getUrl(),
+			'content': post.getContent(withThumbnail=True, fullThumnail=True),
+			'url': post.getUrl(full=True),
 			'updated': post.getDate(),
 			'post': post
 		})

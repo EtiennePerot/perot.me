@@ -16,6 +16,7 @@ Dovecot has a very nice [Pigeonhole plugin], which provides [Sieve] scripts (and
 
 The first step was to make Dovecot use the Pigeonhole plugin. This can be done by adding the sieve plugin to the [LDA] and/or [LMTP] protocols of Dovecot's configuration file:
 
+	:::text
 	protocol lda {
 		mail_plugins = $mail_plugins sieve
 	}
@@ -29,24 +30,29 @@ If you are not using [Arch][Arch Linux] or would rather not use this package, he
 
 Clone the repository:
 
+	:::console
 	$ hg clone http://hg.rename-it.nl/pigeonhole-0.3-sieve-extprograms
 	$ cd pigeonhole*
 
 Configure it (you may need to adjust the paths to match your installation; the one here match the default Arch installation of Dovecot and Pigeonhole):
 
+	:::console
 	$ ./autogen.sh
 	$ ./configure --prefix=/usr --with-dovecot=/usr/lib/dovecot --with-pigeonhole=/usr/include/dovecot/sieve --with-moduledir=/usr/lib/dovecot/modules
 
 Build it:
 
+	:::console
 	$ make
 
 Install it:
 
+	:::console
 	$ sudo make install
 
 Now, Pigeonhole should have the extprograms plugin available. You need to enable it in Dovecot's configuration file:
 
+	:::text
 	plugin {
 		sieve_plugins = sieve_extprograms
 	}
@@ -57,6 +63,7 @@ There are several ways to do this, as described on [the plugin page][extprograms
 
 Now you need to tell Pigeonhole about it, by adding to the `plugin` block described earlier:
 
+	:::text
 	plugin {
 		sieve_plugins = sieve_extprograms
 		sieve_extensions = +vnd.dovecot.filter
@@ -67,16 +74,19 @@ Notice that I added `+vnd.dovecot.filter` to the `sieve_extensions` variable, *n
 
 Next, you need to grab [gpgit] and its dependencies:
 
+	:::console
 	$ cpan install MIME::Tools
 	$ cpan install Mail::GnuPG
 	$ git clone git://perot.me/gpgit # (Clone it in a safe place where you won't delete it accidentally)
 
 And now we need to allow users to use it, by creating a symlink:
 
-	ln -s /path/to/gpgit/gpgit.pl /etc/dovecot/sieve-filters/gpgit
+	:::console
+	$ ln -s /path/to/gpgit/gpgit.pl /etc/dovecot/sieve-filters/gpgit
 
 Now you can restart Dovecot and you should have the ability to use this in a Sieve script:
 
+	:::text
 	require ["fileinto", "vnd.dovecot.filter"];
 
 	if address :matches "To" "me@domain.com" {
@@ -91,10 +101,12 @@ But wait! This won't work yet. That is because Dovecot doesn't yet know what me@
 
 Go back into your server and `su` into the user Pigeonhole is set to run Sieve processing as. Then import the keys into its keyring:
 
-	$ gpg --recv-keys (ID of me@domain.com's PGP key here)
+	:::console
+	$ gpg --recv-keys (ID of me@domain.com PGP key here)
 
 Now you need to mark it as trusted, otherwise `gpg` will refuse to encrypt data with it:
 
+	:::console
 	$ gpg --edit-key me@domain.com
 	gpg> trust
 	  1 = I don't know or won't say

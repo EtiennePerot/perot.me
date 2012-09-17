@@ -4,6 +4,9 @@
 		<title>Etienne Perot</title>
 		<include>head.include.html</include>
 		<include>openid.include.html</include>
+		<style type="text/css">
+			<exec>blog/blog.py --homepage --css</exec>
+		</style>
 	</head>
 	<body>
 		<div id="main">
@@ -11,7 +14,7 @@
 			<include>sidebar.include.html</include>
 			<div id="content">
 				<section id="blog-content">
-					<exec>blog.py --homepage</exec>
+					<exec>blog/blog.py --homepage</exec>
 				</section>
 			</div>
 		</div>
