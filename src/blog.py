@@ -49,9 +49,9 @@ class Post:
 		self.author = m.Meta['author'][0]
 		self.date = datetime.date(*map(int, m.Meta['date'][0].split('-')))
 		self.codeLanguages = []
-		for m in codeLanguageMatch.finditer(text):
-			if m.group(1).lower() not in self.codeLanguages:
-				self.codeLanguages.append(m.group(1).lower())
+		for r in Post.codeLanguageMatch.finditer(text):
+			if r.group(1).lower() not in self.codeLanguages:
+				self.codeLanguages.append(r.group(1).lower())
 		self.url = postsUrl + '/' + baseUrl
 		self.resourceUrl = postsResourceUrl + '/' + baseUrl
 		self.thumb = self.resourceUrl + '/' + thumbFilename
@@ -116,7 +116,7 @@ def substTemplate(template, p):
 	if p.hasCode():
 		if p.hasCodeLanguages():
 			from pygments.formatters import HtmlFormatter
-			highlightCss = HtmlFormatter.get_style_defs('.codehilite')
+			highlightCss = HtmlFormatter().get_style_defs('.codehilite')
 			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
 		else:
 			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
