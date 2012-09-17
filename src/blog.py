@@ -131,6 +131,7 @@ if '--homepage' in sys.argv[1:]:
 	templateF = open(excerptTemplateFile, 'r', encoding='utf8')
 	template = templateF.read(-1)
 	templateF.close()
+	posts = []
 	for p in os.listdir(postsDir):
 		if p[-3:].lower() != '.md':
 			continue
@@ -146,7 +147,10 @@ if '--homepage' in sys.argv[1:]:
 			pastBreakmark = pastBreakmark or l == breakMark
 			if not pastBreakmark:
 				excerpt +=  l + '\n'
-		print(substTemplate(template, Post(excerpt, p[:-3])))
+		posts.append(Post(excerpt, p[:-3]))
+	posts.sort(key = lambda p : p.getDate(), reverse=True)
+	for p in posts:
+		print(substTemplate(template, p))
 
 if '--make' in sys.argv[1:]:
 	templateF = open(templateFile, 'r', encoding='utf8')
@@ -171,8 +175,12 @@ if '--make' in sys.argv[1:]:
 			'author-email': post.getAuthorEmail(),
 			'content': post.getContent(),
 			'url': post.getUrl(),
-			'updated': post.getDate()
+			'updated': post.getDate(),
+			'post': post
 		})
+	feedEntries.sort(key = lambda p : p['post'].getDate(), reverse=True)
+	# Trim to latest 50 entries
+	feedEntries = feedEntries[:min(len(feedEntries), 50)]
 	atomFeed = open(atomFile, 'wb')
 	atomFeed.write(xmldefs.atomFeed(
 		title = blogInfo['title'],
