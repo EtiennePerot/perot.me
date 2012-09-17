@@ -18,6 +18,7 @@ excerptTemplateFile = 'blogpost-excerpt.template.html'
 atomFile = 'posts.atom'
 rss2File = 'posts.rss2'
 breakMark = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+codeBreakMark = '~--~'
 
 import os, sys, datetime, html, re, markdown
 import xmldefs
@@ -38,13 +39,19 @@ def md(extensions=[], extension_configs={}, **kwargs):
 
 class Post:
 	authorMatch = re.compile(r'^\s*(\S(?:.*\S)?)\s*<([^<>]+)>$')
+	codeLanguageMatch = re.compile(r'^[ \t]+:{3,}([^\r\n]+)', re.MULTILINE)
 	def __init__(self, text, baseUrl, m=None):
 		if m is None:
 			m = md()
+		text = text.replace(codeBreakMark, '<!-- -->')
 		self.content = m.convert(text)
 		self.title = m.Meta['title'][0]
 		self.author = m.Meta['author'][0]
 		self.date = datetime.date(*map(int, m.Meta['date'][0].split('-')))
+		self.codeLanguages = []
+		for m in codeLanguageMatch.finditer(text):
+			if m.group(1).lower() not in self.codeLanguages:
+				self.codeLanguages.append(m.group(1).lower())
 		self.url = postsUrl + '/' + baseUrl
 		self.resourceUrl = postsResourceUrl + '/' + baseUrl
 		self.thumb = self.resourceUrl + '/' + thumbFilename
@@ -53,7 +60,7 @@ class Post:
 			self.thumbUrl = m.Meta['thumbnailurl'][0]
 			if '/' not in self.thumbUrl and ':' not in self.thumbUrl:
 				self.thumbUrl = self.url + '/' + self.thumbUrl
-		self.hasCodeTag = '<code' in self.content
+		self.hasCodeTag = self.hasCodeLanguages() or '<code' in self.content
 		self.license = None
 		if 'license' in m.Meta:
 			f = open(licenseDir + os.sep + m.Meta['license'][0].lower() + '.include.html', 'r', encoding='utf8')
@@ -89,6 +96,10 @@ class Post:
 		return self.hasCodeTag
 	def getLicense(self):
 		return self.license
+	def hasCodeLanguages(self):
+		return len(self.codeLanguages)
+	def getCodeLanguages(self):
+		return self.codeLanguages
 
 def substTemplate(template, p):
 	content = template
@@ -103,9 +114,14 @@ def substTemplate(template, p):
 	else:
 		content = content.replace('%thumbnailurl%', html.escape(p.getUrl()))
 	if p.hasCode():
-		content = content.replace('%extrafonts%', '<style>@import "inconsolata.css";</style>')
+		if p.hasCodeLanguages():
+			from pygments.formatters import HtmlFormatter
+			highlightCss = HtmlFormatter.get_style_defs('.codehilite')
+			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
+		else:
+			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
 	else:
-		content = content.replace('%extrafonts%', '')
+		content = content.replace('%extracss%', '')
 	if p.getLicense() is not None:
 		content = content.replace('%license%', p.getLicense())
 	content = content.replace('%content%', p.getContent())

@@ -50,13 +50,22 @@ pre {
 	padding: 1em;
 	border: 1px inset $codeBackgroundColor + #0c0c0c;
 	background: $codeBackgroundColor;
+	font-family: $codeFontFamily;
+	font-size: 9.5pt;
 	* {
 		white-space: pre-wrap;
 	}
-	code {
-		font-family: $codeFontFamily;
-		font-size: 9.5pt;
-	}
+}
+
+.codehilite pre, pre code {
+	font-family: $codeFontFamily;
+	font-size: 9.5pt;
+}
+
+p code {
+	/* Prevent inline code from wrapping */
+	display: inline-block;
+	font-family: $codeFontFamily;
 }
 
 #main {

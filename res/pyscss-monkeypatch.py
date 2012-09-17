@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import os, sys, logging
+import os, sys, logging, inspect
 
 logging.basicConfig()
 
@@ -31,6 +31,10 @@ def join(d1, *ds):
 		newds.append(d)
 	return originalJoin(d1, *newds)
 os.path.join = join
+
+pyscss_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile(inspect.currentframe()))[0], 'pyscss')))
+if pyscss_subfolder not in sys.path:
+	sys.path.insert(0, pyscss_subfolder)
 
 import scss as _scss_mod
 _scss_mod.STATIC_URL = staticUrl or _scss_mod.STATIC_URL

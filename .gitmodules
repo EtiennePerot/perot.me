@@ -1,3 +1,6 @@
 [submodule "src/talks/cs525"]
 	path = src/talks/cs525
 	url = git://perot.me/cs525p
+[submodule "res/pyscss"]
+	path = res/pyscss
+	url = git://github.com/Kronuz/pyScss.git
