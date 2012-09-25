@@ -193,7 +193,7 @@ if '--make' in sys.argv[1:]:
 		f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
 		content = f.read(-1)
 		f.close()
-		content = content.replace('\n' + breakMark + '\n', '') # Strip break mark
+		content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
 		post = Post(content, p[:-3])
 		f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
 		f2.write(substTemplate(template, post))
