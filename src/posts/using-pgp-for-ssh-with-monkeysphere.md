@@ -218,7 +218,7 @@ Ready? Let's go.
 
 This is the tough, long part.
 
-First, declare a PGP key as the "identity certifier" of the server. This key will then sign other keys to mark them as trusted. Usually, the identifity certifier should be you, the server admin, since you effectively have that authority already through the use of regular `authorized_keys` files. To declare a PGP key as identity certifier, you must first find your own key's fingerprint:
+First, declare a PGP key as the "identity certifier" of the server. This key will then sign other keys to mark them as trusted. Usually, the identity certifier should be you, the server admin, since you effectively have that authority already through the use of regular `authorized_keys` files. To declare a PGP key as identity certifier, you must first find your own key's fingerprint:
 
 	:::console
 	dave@demin $ gpg --fingerprint dave@it-corp.com
@@ -304,7 +304,7 @@ This will create `authorized_keys` files inside `/var/lib/monkeysphere/authorize
 	:::console
 	root@cervo # monkeysphere-authentication update-users
 
-Like I mentioned, the generated `authorized_keys` files are stored in `/var/lib/monkeysphere/authorized_keys/`, so that they don't overwrite your existing `~/.ssh/authorized_keys` and so that they are not visible to each user account. The flipside of that is that now you need to tell `sshd` to use these files instead of the usual `~/.ssh/authorized_keys`. To do this, edit `/etc/ssh/sshd_config`:
+Like I mentioned, the generated `authorized_keys` files are stored in `/var/lib/monkeysphere/authorized_keys/`, so that they don't overwrite your existing `~/.ssh/authorized_keys` and so that they are not visible to each user account. The flip side of that is that now you need to tell `sshd` to use these files instead of the usual `~/.ssh/authorized_keys`. To do this, edit `/etc/ssh/sshd_config`:
 
 	:::console
 	root@cervo # $EDITOR /etc/ssh/sshd_config
@@ -409,7 +409,7 @@ Make it executable and readable only by you:
 	:::console
 	joe@clint [~/.monkeysphere-automate] $ chmod 700 load-identity.sh
 
-Now, just add `/home/joe/.monkeysphere-automate/load-identity.sh` to your list of startup scripts and you should be set. This will only work if you have `ssh-agent` also being spawned on startup, and it must be spawned before this script is invokved.
+Now, just add `/home/joe/.monkeysphere-automate/load-identity.sh` to your list of startup scripts and you should be set. This will only work if you have `ssh-agent` also being spawned on startup, and it must be spawned before this script is invoked.
 
 [SSH]: https://en.wikipedia.org/wiki/Secure_Shell
 [public-key infrastructure]: https://en.wikipedia.org/wiki/Public_key_infrastructure

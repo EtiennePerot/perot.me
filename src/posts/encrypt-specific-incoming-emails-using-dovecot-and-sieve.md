@@ -4,7 +4,7 @@ Date:         2012-07-14
 License:      CC-BY-3.0
 ThumbnailUrl: diagram.png
 
-I run my own mail server, and while I try to follow healthy security practices and apply updates as soon as possible, extra security is always a good thing. I was looking for solutions to encrypt all incoming emails (that were not already encrypted) with [my PGP key] as soon as they arrive on my mail server. This way, even if an attacker gains acccess to the system, (s)he will not be able to read the contents of my emails. That's a pretty powerful thing.
+I run my own mail server, and while I try to follow healthy security practices and apply updates as soon as possible, extra security is always a good thing. I was looking for solutions to encrypt all incoming emails (that were not already encrypted) with [my PGP key] as soon as they arrive on my mail server. This way, even if an attacker gains access to the system, (s)he will not be able to read the contents of my emails. That's a pretty powerful thing.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -24,7 +24,7 @@ The first step was to make Dovecot use the Pigeonhole plugin. This can be done b
 		mail_plugins = $mail_plugins sieve
 	}
 
-Now, we need to get Pigeonhole to use the [extprograms plugin], which allows Sieve scripts to call certain (whitelisted, of course) programs. Sadly, this plugin did not have a package on the [AUR][Arch User Repository] (a rare occcurrence), so I [submitted my own][pigeonhole-extprograms package].
+Now, we need to get Pigeonhole to use the [extprograms plugin], which allows Sieve scripts to call certain (whitelisted, of course) programs. Sadly, this plugin did not have a package on the [AUR][Arch User Repository] (a rare occurrence), so I [submitted my own][pigeonhole-extprograms package].
 
 If you are not using [Arch][Arch Linux] or would rather not use this package, here is how you can build it:
 
