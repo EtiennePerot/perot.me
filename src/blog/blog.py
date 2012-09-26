@@ -27,7 +27,9 @@ import os, sys, datetime, html, re, markdown
 import xmldefs
 from mannimod import ManniStyle_mod
 
-os.chdir(os.path.dirname(sys.argv[0]))
+scriptDir = os.path.dirname(sys.argv[0])
+if scriptDir:
+	os.chdir(scriptDir)
 
 def md(extensions=[], extension_configs={}, **kwargs):
 	keywordargs = {
@@ -48,20 +50,24 @@ def md(extensions=[], extension_configs={}, **kwargs):
 class Post:
 	authorMatch = re.compile(r'^\s*(\S(?:.*\S)?)\s*<([^<>]+)>$')
 	codeLanguageMatch = re.compile(r'^[ \t]+:{3,}([^\r\n]+)', re.MULTILINE)
+	linkMatch = re.compile(r'^\[([^]\r\n]+)\]:[ \t]*(\S+)(?:[ \t]+([^\r\n]+))?', re.MULTILINE)
 	def __init__(self, text, baseUrl, m=None):
+		self.resourceUrl = postsResourceUrl + '/' + baseUrl
+		self.rawText = text
 		if m is None:
 			m = md()
 		text = text.replace(codeBreakMark, '<!-- -->')
+		text = Post.linkMatch.sub(self._handleLink, text)
 		self.content = m.convert(text)
 		self.title = m.Meta['title'][0]
 		self.author = m.Meta['author'][0]
 		self.date = datetime.date(*map(int, m.Meta['date'][0].split('-')))
+		self.staging = 'staging' in m.Meta
 		self.codeLanguages = []
 		for r in Post.codeLanguageMatch.finditer(text):
 			if r.group(1).lower() not in self.codeLanguages:
 				self.codeLanguages.append(r.group(1).lower())
 		self.url = postsUrl + '/' + baseUrl
-		self.resourceUrl = postsResourceUrl + '/' + baseUrl
 		self.thumb = self.resourceUrl + '/' + thumbFilename
 		self.thumbUrl = None
 		if 'thumbnailurl' in m.Meta:
@@ -74,6 +80,14 @@ class Post:
 			f = open(licenseDir + os.sep + m.Meta['license'][0].lower() + '.include.html', 'r', encoding='utf8')
 			self.license = f.read(-1)
 			f.close()
+	def _handleLink(self, match):
+		url = match.group(2)
+		if '/' not in url:
+			url = (self.resourceUrl + '/' + url).replace('//', '/')
+		title = match.group(3)
+		if not title:
+			title = '"' + match.group(1) + '"'
+		return '[' + match.group(1) + ']: ' + url + ' ' + title
 	def getTitle(self):
 		return self.title
 	def getAuthor(self):
@@ -88,6 +102,8 @@ class Post:
 			return res.group(2)
 	def getDate(self):
 		return self.date
+	def isStaging(self):
+		return self.staging
 	def getPrintableDate(self):
 		return str(self.date)
 	def getUrl(self, full=True):
@@ -102,6 +118,8 @@ class Post:
 				return '<p><a href="' + html.escape(self.getThumbUrl(full=fullThumnail)) + '"><img src="' + html.escape(self.getThumb(full=fullThumnail)) + '" title="' + html.escape(self.getTitle()) + '" alt="' + html.escape(self.getTitle()) + '"/></a></p>' + self.content
 			return '<p><img src="' + html.escape(self.getThumb(full=fullThumnail)) + '" title="' + html.escape(self.getTitle()) + '" alt="' + html.escape(self.getTitle()) + '"/></p>' + self.content
 		return self.content
+	def getRawText(self):
+		return self.rawText
 	def getThumb(self, full=False):
 		if full:
 			return postsAbsoluteUrl + self.thumb
@@ -165,7 +183,9 @@ if '--homepage' in sys.argv[1:]:
 			pastBreakmark = pastBreakmark or l == breakMark
 			if not pastBreakmark:
 				excerpt +=  l + '\n'
-		posts.append(Post(excerpt, p[:-3]))
+		post = Post(excerpt, p[:-3])
+		if not post.isStaging():
+			posts.append(post)
 	posts.sort(key = lambda p : p.getDate(), reverse=True)
 	if '--css' in sys.argv[1:]:
 		hasCode = False
@@ -198,16 +218,18 @@ if '--make' in sys.argv[1:]:
 		f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
 		f2.write(substTemplate(template, post))
 		f2.close()
-		feedEntries.append({
-			'title': post.getTitle(),
-			'author': post.getAuthor(),
-			'author-name': post.getAuthorName(),
-			'author-email': post.getAuthorEmail(),
-			'content': post.getContent(withThumbnail=True, fullThumnail=True),
-			'url': post.getUrl(full=True),
-			'updated': post.getDate(),
-			'post': post
-		})
+		if not post.isStaging():
+			feedEntries.append({
+				'title': post.getTitle(),
+				'author': post.getAuthor(),
+				'author-name': post.getAuthorName(),
+				'author-email': post.getAuthorEmail(),
+				'content': post.getContent(withThumbnail=True, fullThumnail=True),
+				'rawcontent': post.getRawText(),
+				'url': post.getUrl(full=True),
+				'updated': post.getDate(),
+				'post': post
+			})
 	feedEntries.sort(key = lambda p : p['post'].getDate(), reverse=True)
 	# Trim to latest 50 entries
 	feedEntries = feedEntries[:min(len(feedEntries), 50)]
