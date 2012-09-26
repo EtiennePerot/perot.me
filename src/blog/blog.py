@@ -73,7 +73,7 @@ class Post:
 		if 'thumbnailurl' in m.Meta:
 			self.thumbUrl = m.Meta['thumbnailurl'][0]
 			if '/' not in self.thumbUrl and ':' not in self.thumbUrl:
-				self.thumbUrl = self.url + '/' + self.thumbUrl
+				self.thumbUrl = (self.resourceUrl + '/' + self.thumbUrl).replace('//', '/')
 		self.hasCodeTag = self.hasCodeLanguages() or '<code' in self.content
 		self.license = None
 		if 'license' in m.Meta:
