@@ -178,7 +178,7 @@ if '--homepage' in sys.argv[1:]:
 		excerpt = ''
 		pastBreakmark = False
 		for l in content.split('\n'):
-			if l and l[0] == '[': # Link definition; keep this.
+			if l and Post.linkMatch.search(l): # Link definition; keep this.
 				excerpt +=  l + '\n'
 			pastBreakmark = pastBreakmark or l == breakMark
 			if not pastBreakmark:
