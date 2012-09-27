@@ -62,7 +62,7 @@ Education
 ---------
 * **Bachelor of Science in Software Engineering** (_2009 — present_)  
   **[McGill University]**, Montreal, Quebec  
-  _GPA_: TODO
+  _GPA_: N/A
 
 * **Baccalaurat Français Scientifique** (_general French Baccalaureate, Sciences stream_) (_2007 — 2009_)  
   **[College Stanislas]**, Montreal, Quebec  
