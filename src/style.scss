@@ -20,8 +20,7 @@ $sidebarPaddingRight: 1em;
 $contentMaximumWidth: $mainMaximumWidth - $sidebarWidth - $sidebarMargin - (2 * $contentPadding);
 $webIcons: sprite-map("/img/icons/*.png");
 $footerColor: rgba(192, 192, 192, 0.5);
-$torHiddenServiceColor: #002000;
-$linkColor: #504040;
+$linkColor: #634646;
 $linkHoverColorChange: #400000;
 $linkHoverOpacify: 0.5;
 
@@ -109,6 +108,10 @@ p code {
 					padding-left: 1.5em;
 					padding-right: 1.5em;
 					border-left: 1px solid $dividerColor;
+					a.current {
+						color: $contentColor;
+						border-bottom: 2px solid #606060;
+					}
 				}
 				li:first-child {
 					border-left: none;
@@ -231,12 +234,6 @@ body > footer {
 	}
 	a:hover {
 		color: opacify($footerColor, $linkHoverOpacify);
-	}
-	.tor-hidden-service {
-		color: $footerColor + $torHiddenServiceColor;
-	}
-	.tor-hidden-service:hover {
-		color: opacify($footerColor + $torHiddenServiceColor, $linkHoverOpacify);
 	}
 	.loadfast-notice {
 		opacity: .4;

@@ -163,87 +163,88 @@ def substTemplate(template, p):
 	content = content.replace('%content%', p.getContent())
 	return content
 
-if '--homepage' in sys.argv[1:]:
-	templateF = open(excerptTemplateFile, 'r', encoding='utf8')
-	template = templateF.read(-1)
-	templateF.close()
-	posts = []
-	for p in os.listdir(filesystemPostsDir):
-		if p[-3:].lower() != '.md':
-			continue
-		f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
-		content = f.read(-1)
-		f.close()
-		# Extract excerpt
-		excerpt = ''
-		pastBreakmark = False
-		for l in content.split('\n'):
-			if l and Post.linkMatch.search(l): # Link definition; keep this.
-				excerpt +=  l + '\n'
-			pastBreakmark = pastBreakmark or l == breakMark
-			if not pastBreakmark:
-				excerpt +=  l + '\n'
-		post = Post(excerpt, p[:-3])
-		if not post.isStaging():
-			posts.append(post)
-	posts.sort(key = lambda p : p.getDate(), reverse=True)
-	if '--css' in sys.argv[1:]:
-		hasCode = False
-		hasCodeLanguages = False
-		for p in posts:
-			hasCode = hasCode or p.hasCode()
-			hasCodeLanguages = hasCodeLanguages or hasCode or p.hasCodeLanguages()
-		if hasCode:
-			print('@import "inconsolata.css";')
-		if hasCodeLanguages:
-			from pygments.formatters import HtmlFormatter
-			print(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
-	else:
-		for p in posts:
-			print(substTemplate(template, p))
+if __name__ == '__main__':
+	if '--homepage' in sys.argv[1:]:
+		templateF = open(excerptTemplateFile, 'r', encoding='utf8')
+		template = templateF.read(-1)
+		templateF.close()
+		posts = []
+		for p in os.listdir(filesystemPostsDir):
+			if p[-3:].lower() != '.md':
+				continue
+			f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
+			content = f.read(-1)
+			f.close()
+			# Extract excerpt
+			excerpt = ''
+			pastBreakmark = False
+			for l in content.split('\n'):
+				if l and Post.linkMatch.search(l): # Link definition; keep this.
+					excerpt +=  l + '\n'
+				pastBreakmark = pastBreakmark or l == breakMark
+				if not pastBreakmark:
+					excerpt +=  l + '\n'
+			post = Post(excerpt, p[:-3])
+			if not post.isStaging():
+				posts.append(post)
+		posts.sort(key = lambda p : p.getDate(), reverse=True)
+		if '--css' in sys.argv[1:]:
+			hasCode = False
+			hasCodeLanguages = False
+			for p in posts:
+				hasCode = hasCode or p.hasCode()
+				hasCodeLanguages = hasCodeLanguages or hasCode or p.hasCodeLanguages()
+			if hasCode:
+				print('@import "inconsolata.css";')
+			if hasCodeLanguages:
+				from pygments.formatters import HtmlFormatter
+				print(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
+		else:
+			for p in posts:
+				print(substTemplate(template, p))
 
-if '--make' in sys.argv[1:]:
-	templateF = open(templateFile, 'r', encoding='utf8')
-	template = templateF.read(-1)
-	templateF.close()
-	feedEntries = []
-	for p in os.listdir(filesystemPostsDir):
-		if p[-3:].lower() != '.md':
-			continue
-		f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
-		content = f.read(-1)
-		f.close()
-		content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
-		post = Post(content, p[:-3])
-		f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
-		f2.write(substTemplate(template, post))
-		f2.close()
-		if not post.isStaging():
-			feedEntries.append({
-				'title': post.getTitle(),
-				'author': post.getAuthor(),
-				'author-name': post.getAuthorName(),
-				'author-email': post.getAuthorEmail(),
-				'content': post.getContent(withThumbnail=True, fullThumnail=True),
-				'rawcontent': post.getRawText(),
-				'url': post.getUrl(full=True),
-				'updated': post.getDate(),
-				'post': post
-			})
-	feedEntries.sort(key = lambda p : p['post'].getDate(), reverse=True)
-	# Trim to latest 50 entries
-	feedEntries = feedEntries[:min(len(feedEntries), 50)]
-	atomFeed = open(atomFile, 'wb')
-	atomFeed.write(xmldefs.atomFeed(
-		title = blogInfo['title'],
-		mainUrl = blogInfo['link'],
-		entries = feedEntries
-	))
-	atomFeed.close()
-	rss2Feed = open(rss2File, 'wb')
-	rss2Feed.write(xmldefs.rss2Feed(
-		title = blogInfo['title'],
-		mainUrl = blogInfo['link'],
-		entries = feedEntries
-	))
-	rss2Feed.close()
+	if '--make' in sys.argv[1:]:
+		templateF = open(templateFile, 'r', encoding='utf8')
+		template = templateF.read(-1)
+		templateF.close()
+		feedEntries = []
+		for p in os.listdir(filesystemPostsDir):
+			if p[-3:].lower() != '.md':
+				continue
+			f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
+			content = f.read(-1)
+			f.close()
+			content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
+			post = Post(content, p[:-3])
+			f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
+			f2.write(substTemplate(template, post))
+			f2.close()
+			if not post.isStaging():
+				feedEntries.append({
+					'title': post.getTitle(),
+					'author': post.getAuthor(),
+					'author-name': post.getAuthorName(),
+					'author-email': post.getAuthorEmail(),
+					'content': post.getContent(withThumbnail=True, fullThumnail=True),
+					'rawcontent': post.getRawText(),
+					'url': post.getUrl(full=True),
+					'updated': post.getDate(),
+					'post': post
+				})
+		feedEntries.sort(key = lambda p : p['post'].getDate(), reverse=True)
+		# Trim to latest 50 entries
+		feedEntries = feedEntries[:min(len(feedEntries), 50)]
+		atomFeed = open(atomFile, 'wb')
+		atomFeed.write(xmldefs.atomFeed(
+			title = blogInfo['title'],
+			mainUrl = blogInfo['link'],
+			entries = feedEntries
+		))
+		atomFeed.close()
+		rss2Feed = open(rss2File, 'wb')
+		rss2Feed.write(xmldefs.rss2Feed(
+			title = blogInfo['title'],
+			mainUrl = blogInfo['link'],
+			entries = feedEntries
+		))
+		rss2Feed.close()
