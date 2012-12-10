@@ -44,7 +44,7 @@ for l in navLinks:
 print('</ul></nav>', end='')
 
 # Header
-print('<header><h1><a href="/">Etienne Perot</a>', end='')
+print('<header><h1><a href="/"><img src="/img/logo/logo.svg" id="logo-img" alt="t^n"/> Etienne Perot</a>', end='')
 if len(sys.argv) == 4:
 	print(' &raquo; <a href="' + html.escape(sys.argv[2]) + '">' + html.escape(sys.argv[3]) + '</a>', end='')
 else:
