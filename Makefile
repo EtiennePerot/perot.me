@@ -19,11 +19,18 @@ HTML_FILTERS_AFTER_COMPRESSION = +fix-openid +mark-compressed
 
 all: clean build compress chmod deploy
 
-build: build-init blog css html cv
+build: build-init logo blog css html cv
 
 build-init:
 	mkdir -p "$(BUILD_DIR)"
 	rsync -rqhupXt --exclude=".git" --exclude="*.gz" --delete-after "$(SRC_DIR)/" "$(BUILD_DIR)/"
+
+logo:
+	# 16x16 logo is pregenerated, slightly different
+	for w in 24 32 48 64 128 144 256 512; do \
+		inkscape -z -e "$(STATIC_DIR)/logo/logo_$${w}x$${w}.png" -w "$$w" -h "$$w" "$(STATIC_DIR)/logo/logo.svg"; \
+	done
+	png2ico "$(BUILD_DIR)/favicon.ico" "$(STATIC_DIR)/logo/logo_16x16.png"
 
 blog:
 	"$(BUILD_DIR)/blog/blog.py" --make
