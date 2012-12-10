@@ -12,9 +12,9 @@ Skills
 * **Programming languages**: Extensive knowledge of [Python] (_as a programming language_), [Java], [PHP], [SQL]; working knowledge of [C] and [C++].
 * **Scripting languages**: Extensive knowledge of [Python] (_as a scripting language_) and [Bash].
 * **Web development**: Extensive knowledge of [JavaScript], [jQuery], [Ajax], [HTML] ([XHTML] and [HTML5]), [CSS].
-* **Libraries/Engines**: Extensive knowledge of [FUSE] (C library and its bindings), [Qt] (C++ library and its bindings), [jMonkeyEngine 3], [JNA], [iText].
-* **Version control systems**: [Git], [Mercurial], [Subversion].
-* **Software**: Extensive knowledge of [Linux] (and Unix in general), [MySQL], [nginx], [php-fpm], [Dovecot].
+* **Libraries/Engines**: Extensive knowledge of [FUSE] (both the C library and its bindings), [Qt] (C++ library and its bindings), [jMonkeyEngine 3], [JNA], [iText].
+* **Version control systems**: Familiar with [Git], [Mercurial], [Subversion].
+* **Software**: Familiar with [Linux] (and Unix in general), [MySQL], [nginx], [php-fpm], [Dovecot].
 
 Projects
 --------
