@@ -54,9 +54,6 @@ Employment
 * **Software developer** (internship) at **[Dental Wings]** (_June 2010 — August 2010_)  
   Wrote an internal Java application (Swing toolkit) to assist in testing the accuracy of 3D dental scanners, by comparing the scanned data with reference models and generating a metrology accuracy report for each scanner.  
   _Technologies used_: [Java], [Swing], [iText].
-* **Web developer** at **[Clinique Ostopathie-Santé]** (_May 2009 — July 2009_)  
-  Wrote the frontend and the backend of an internal web application used to manage patients' information, track their visits, payments, and changes in patients' health.  
-  _Technologies used_: [PHP], [MySQL], [JavaScript], [Ajax], [Google Data APIs], [CSS], [HTML].
 
 Education
 ---------
