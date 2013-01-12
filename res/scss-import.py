@@ -1,6 +1,6 @@
 import sys, os, re, filefilter
-inlineStyles = re.compile(r'(<style[^<>]*>)([\s\S]*)</style>', re.IGNORECASE)
-scssImport = re.compile('\\s*@import\\s+([\'"])/*((?:\\\\.|(?!\\1).)+?)\\.s?css\\1\\s*;\\s*', re.IGNORECASE)
+inlineStyles = re.compile(r'(<style[^<>]*>)(.*)</style>', re.IGNORECASE | re.DOTALL)
+scssImport = re.compile(r'@import\s+([\'"])/*((?:\\.|(?!\1).)+?)\.s?css\1;', re.IGNORECASE)
 
 def parseImport(f, m):
 	cssPath = filefilter.findFile(f, m.group(2) + '.css')
