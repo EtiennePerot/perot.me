@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-# Usage: nav.py section-name [breadcrumb-url breadcrumb-label]
+# Usage: nav.py section-name breadcrumb-url breadcrumb-label
+#    or: nav.py section-name breadcrumb-label
+#    or: nav.py section-name
 
 import sys, html
 
@@ -31,7 +33,7 @@ navLinks = [
 
 def navLink(l):
 	isCurrent = ''
-	if sys.argv[1] == l['name']:
+	if len(sys.argv) > 1 and sys.argv[1] == l['name']:
 		isCurrent = ' class="current"'
 	print('<li><a href="' + l['url'] + '"' + isCurrent + '>' + l['label'] + '</a>', end='')
 	if 'extra' in l:
@@ -47,6 +49,8 @@ print('</ul></nav>', end='')
 print('<header><h1><a href="/"><img src="/img/logo/logo.svg" id="logo-img" alt="t^n"/> Etienne Perot</a>', end='')
 if len(sys.argv) == 4:
 	print(' &raquo; <a href="' + html.escape(sys.argv[2]) + '">' + html.escape(sys.argv[3]) + '</a>', end='')
+elif len(sys.argv) == 3:
+	print(' &raquo; ' + html.escape(sys.argv[2]), end='')
 else:
 	for l in navLinks:
 		if sys.argv[1] == l['name']:
