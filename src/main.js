@@ -10,10 +10,12 @@ emailReplace = {
 				email = email.substring(email.indexOf('<') + 1, email.indexOf('>')).replace(/^\s+|\s+$/g, '');
 			}
 			email = email.replace(/\s*\(?dot\)?\s*/gi, '.').replace(/\s*\(?at\)?\s*/gi, '@');
-			if(label == null) {
-				label = email;
+			if(email.match(/^\S@(?:[-\w]+\.)+[-\w]+$/)) {
+				if(label == null) {
+					label = email;
+				}
+				$(this).empty().append($('<a/>').attr('href', 'mailto:' + email).text(label));
 			}
-			$(this).empty().append($('<a/>').attr('href', 'mailto:' + email).text(label));
 		});
 	}
 };
