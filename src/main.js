@@ -18,3 +18,10 @@ emailReplace = {
 	}
 };
 $(emailReplace.init);
+
+javascriptOnly = {
+	init: function() {
+		$('.javascript-only').css('display', 'block');
+	}
+}
+$(javascriptOnly.init);

@@ -56,6 +56,10 @@ pre {
 	}
 }
 
+.javascript-only {
+	display: none; /* This gets changed back by JavaScript. */
+}
+
 .codehilite pre, pre code {
 	font-family: $codeFontFamily;
 	font-size: 9.5pt;
