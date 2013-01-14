@@ -10,7 +10,7 @@ emailReplace = {
 				email = email.substring(email.indexOf('<') + 1, email.indexOf('>')).replace(/^\s+|\s+$/g, '');
 			}
 			email = email.replace(/\s*\(?dot\)?\s*/gi, '.').replace(/\s*\(?at\)?\s*/gi, '@');
-			if(email.match(/^\S@(?:[-\w]+\.)+[-\w]+$/)) {
+			if(email.match(/^\S+@(?:[-\w]+\.)+[-\w]+$/)) {
 				if(label == null) {
 					label = email;
 				}
