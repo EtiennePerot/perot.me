@@ -15,6 +15,8 @@ while i < len(sys.argv):
 		i += 1
 	elif v == '--assets-url':
 		assetsUrl = sys.argv[i + 1]
+		if len(assetsUrl) and assetsUrl[-1] != '/':
+			assetsUrl += '/'
 		i += 1
 	else:
 		newArgv.append(v)
