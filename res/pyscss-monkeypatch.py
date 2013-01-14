@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-import os, sys, logging, inspect
+import os, sys, logging, inspect, base64
 
 logging.basicConfig()
 
@@ -39,6 +39,32 @@ if pyscss_subfolder not in sys.path:
 import scss as _scss_mod
 _scss_mod.STATIC_URL = staticUrl or _scss_mod.STATIC_URL
 _scss_mod.ASSETS_URL = assetsUrl or _scss_mod.ASSETS_URL
+
+__scss_original___image_url = _scss_mod.__image_url
+def _image_url_wrapper_gifcopy(path, only_path=False, cache_buster=True, dst_color=None, src_color=None, inline=False, mime_type=None):
+	filepath = _scss_mod.StringValue(path).value
+	if inline and not callable(_scss_mod.STATIC_ROOT) and filepath[-4:].lower() == '.gif':
+		gifpath = os.path.join(_scss_mod.STATIC_ROOT, filepath)
+		if os.path.exists(gifpath):
+			gif_handle = open(gifpath, 'rb')
+			gif_content = gif_handle.read(-1)
+			gif_handle.close()
+			url = 'data:image/gif;base64,' + base64.b64encode(gif_content)
+			if not only_path:
+				url = 'url("%s")' % _scss_mod.escape(url)
+			return _scss_mod.StringValue(url)
+	return __scss_original___image_url(
+		path = path,
+		only_path = only_path,
+		cache_buster = cache_buster,
+		dst_color = dst_color,
+		src_color = src_color,
+		inline = inline,
+		mime_type = mime_type
+	)
+
+_scss_mod.__image_url = _image_url_wrapper_gifcopy
+
 from scss import *
 if __name__ == '__main__':
 	main()
