@@ -4,6 +4,10 @@
 		<title>Etienne Perot — %title%</title>
 		<include>head.include.html</include>
 		%extracss%
+		<style>
+		@import "blog/postpage.scss";
+		</style>
+		%extrajs%
 	</head>
 	<body>
 		<div id="main">
@@ -17,7 +21,7 @@
 							<aside class="markdownlink">
 								<a href="%mdurl%">View this article as markdown</a>
 							</aside>
-							By <span class="author email-replace">%author%</span> on <span class="date">%date%</span>.
+							By <span class="author email-replace">%author%</span> on <time pubdate="true" datetime="%pubdate%">%date%</time>.
 						</h2>
 					</header>
 					<div class="thumbnail">
@@ -27,6 +31,37 @@
 					<footer>
 						<p class="license"><strong>License</strong>: %license%</p>
 					</footer>
+					<hr class="comments-separator"/>
+					%commentliststart%
+					<section id="comments">
+						<header>
+							<h2>Comments on "%title%" (<strong>%numcomments%</strong>)</h2>
+						</header>
+						<div id="comments-list">
+							%comments%
+						</div>
+					</section>
+					%commentlistend%
+					<section id="comment-reply">
+						<header>
+							<h3>Replying to: <a href="%url%" title="%title%">%title%</a></h3>
+						</header>
+						<noscript>
+							<div class="notice">
+								<h2>Notice</h2>
+								<p>You do not have JavaScript enabled. In order to post a comment, please enable JavaScript or use the <a href="%commentformurl%">standalone comment form for this post</a>.</p>
+								<p>This site uses no malicious or <a href="https://www.gnu.org/philosophy/javascript-trap.html" title="nonfree JavaScript">nonfree</a> JavaScript, and does not use any third-party analytics/tracking/advertising service whatsoever.</p>
+							</div>
+						</noscript>
+						<div class="javascript-only">
+							<form action="/comment" method="post" id="comment-form">
+								%iscommentform%
+								<input type="hidden" name="article" id="comment-article" value="%urlname%" />
+								<input type="hidden" name="nonce" id="comment-nonce" value="" />
+								<include>blog/comments/comment_form.include.html</include>
+							</form>
+						</div>
+					</div>
 				</article>
 			</div>
 		</div>

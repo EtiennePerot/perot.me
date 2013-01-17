@@ -1,0 +1,40 @@
+.error, .notice, .success {
+	border-radius: .4em;
+	padding: .4em;
+	font-weight: bold;
+	h2 {
+		font-size: 1.15em;
+		margin: 0em;
+	}
+	p {
+		margin-bottom: 0em;
+	}
+}
+
+.error {
+	border: solid 1px #FCD0CF;
+	background: #FCE3E0;
+	color: #A04023;
+	h2 {
+		color: #701003;
+	}
+}
+
+.success {
+	border: solid 1px #BCF3C3;
+	background: #D9FCC9;
+	color: #49A636;
+	h2 {
+		color: #167609;
+	}
+}
+
+.notice {
+	border: solid 1px #9FB3C6;
+	background: #C6DCFC;
+	color: #06397C;
+	h2 {
+		color: #001936;
+	}
+}
+

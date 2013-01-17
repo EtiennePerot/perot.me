@@ -1,0 +1,18 @@
+<label for="message">Comment (<a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> enabled)</label>
+<textarea name="message" id="comment-message" title="Message" tabindex="1" placeholder="Your comment here..."></textarea>
+<div class="author-line">
+	<div class="author-name">
+		<label for="username" class="optional">Name (Optional)</label>
+		<span><input type="text" name="username" id="comment-username" title="Name (Optional)" tabindex="2" placeholder="John Smith" /></span>
+	</div>
+	<div class="author-website">
+		<label for="website" class="optional">Website (Optional)</label>
+		<span>
+			<input type="url" name="website" id="comment-website" title="Website (Optional)" tabindex="3" placeholder="https://johnsmith.name/" />
+		</span>
+	</div>
+</div>
+<div class="clearfix">
+	<input type="submit" name="comment-submit" id="comment-submit" value="Submit" title="Submit your comment" tabindex="4" />
+	<span id="comment-status"></span>
+</div>

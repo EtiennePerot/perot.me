@@ -9,12 +9,15 @@ blogInfo = {
 	'author_link': 'https://perot.me/'
 }
 filesystemPostsDir = '../posts'
+blogDirFromPostsDir = '../blog'
 postsUrl = ''
 postsAbsoluteUrl = 'https://perot.me'
 postsResourceUrl = '/posts-img'
 thumbFilename = 'thumb.png'
 licenseDir = 'licenses'
 templateFile = 'blogpost.template.html'
+replyTemplateFile = 'comments/compose.template.php'
+commentsTemplateFile = 'comments/comment.template.html'
 excerptTemplateFile = 'blogpost-excerpt.template.html'
 atomFile = '../posts.atom'
 rss2File = '../posts.rss2'
@@ -47,11 +50,68 @@ def md(extensions=[], extension_configs={}, **kwargs):
 	m = markdown.Markdown(**keywordargs)
 	return m
 
+codeLanguageMatch = re.compile(r'^[ \t]+:{3,}([^\r\n]+)', re.MULTILINE)
+def getCodeInfo(rawText, formattedText):
+	codeLanguages = []
+	for r in codeLanguageMatch.finditer(rawText):
+		if r.group(1).lower() not in codeLanguages:
+			codeLanguages.append(r.group(1).lower())
+	return codeLanguages, len(codeLanguages) or '<code' in formattedText
+
+def phpEscape(s):
+	return '\'' + s.replace('\\', '\\\\').replace('\'', '\\\'') + '\''
+
+class Comment:
+	def __init__(self, post, text):
+		self.post = post
+		self.rawText = html.escape(text)
+		self.index = None
+		m = md()
+		self.content = m.convert(self.rawText)
+		self.content = self.content.replace('<a ', '<a rel="nofollow" ')
+		self.date = datetime.datetime.strptime(m.Meta['date'][0], '%Y-%m-%d %H:%M:%S')
+		self.author = None
+		self.website = None
+		if 'author' in m.Meta and m.Meta['author'][0].lower() != 'anonymous':
+			self.author = m.Meta['author'][0]
+			if 'website' in m.Meta: # URL is only valid if there is a valid author
+				self.website = m.Meta['website'][0]
+		self.codeLanguages, self.hasCodeTag = getCodeInfo(self.rawText, self.content)
+	def __lt__(self, other):
+		return self.date < other.date
+	def __eq__(self, other):
+		return self.post == other.post and self.date == other.date and self.content == other.content and self.author == other.author and self.website == other.website and self.rawText == other.rawText
+	def setIndex(self, index):
+		self.index = index
+	def hasCode(self):
+		return self.hasCodeTag
+	def hasCodeLanguages(self):
+		return len(self.codeLanguages)
+	def getCodeLanguages(self):
+		return self.codeLanguages
+	def subst(self, template):
+		content = template
+		content = content.replace('%commentnumber%', str(self.index))
+		if self.index % 2 == 0:
+			content = content.replace('%commentevenodd%', 'even')
+		else:
+			content = content.replace('%commentevenodd%', 'odd')
+		content = content.replace('%commentpubdate%', str(self.date)) # Formats as YYYY-MM-DD HH:MM:SS which is valid
+		content = content.replace('%commentdate%', self.date.strftime('%Y-%m-%d %H:%M'))
+		if self.author is None:
+			content = content.replace('%commentauthor%', '<span class="comment-author comment-anonymous">Anonymous</span>')
+		elif self.website is None:
+			content = content.replace('%commentauthor%', '<span class="comment-author email-replace">' + html.escape(self.author) + '</span>')
+		else:
+			content = content.replace('%commentauthor%', '<a href="' + html.escape(self.website) + '" rel="nofollow" class="comment-author">' + html.escape(self.author) + '</a>')
+		content = content.replace('%comment%', self.content)
+		return content
+
 class Post:
 	authorMatch = re.compile(r'^\s*(\S(?:.*\S)?)\s*<([^<>]+)>$')
-	codeLanguageMatch = re.compile(r'^[ \t]+:{3,}([^\r\n]+)', re.MULTILINE)
 	linkMatch = re.compile(r'^\[([^]\r\n]+)\]:[ \t]*(\S+)(?:[ \t]+([^\r\n]+))?', re.MULTILINE)
 	def __init__(self, text, baseUrl, m=None):
+		self.baseUrl = baseUrl
 		self.resourceUrl = postsResourceUrl + '/' + baseUrl
 		self.rawText = text
 		if m is None:
@@ -61,12 +121,10 @@ class Post:
 		self.content = m.convert(text)
 		self.title = m.Meta['title'][0]
 		self.author = m.Meta['author'][0]
+		# datetime.date doesn't have strptime
 		self.date = datetime.date(*map(int, m.Meta['date'][0].split('-')))
 		self.staging = 'staging' in m.Meta
-		self.codeLanguages = []
-		for r in Post.codeLanguageMatch.finditer(text):
-			if r.group(1).lower() not in self.codeLanguages:
-				self.codeLanguages.append(r.group(1).lower())
+		self.codeLanguages, self.hasCodeTag = getCodeInfo(text, self.content)
 		self.url = postsUrl + '/' + baseUrl
 		self.thumb = self.resourceUrl + '/' + thumbFilename
 		self.thumbUrl = None
@@ -74,12 +132,26 @@ class Post:
 			self.thumbUrl = m.Meta['thumbnailurl'][0]
 			if '/' not in self.thumbUrl and ':' not in self.thumbUrl:
 				self.thumbUrl = (self.resourceUrl + '/' + self.thumbUrl).replace('//', '/')
-		self.hasCodeTag = self.hasCodeLanguages() or '<code' in self.content
 		self.license = None
 		if 'license' in m.Meta:
 			f = open(licenseDir + os.sep + m.Meta['license'][0].lower() + '.include.html', 'r', encoding='utf8')
 			self.license = f.read(-1)
 			f.close()
+		self.comments = []
+		commentsDir = filesystemPostsDir + os.sep + baseUrl + os.sep + 'comments'
+		if os.path.isdir(commentsDir):
+			for commentFile in os.listdir(commentsDir):
+				if commentFile[-3:].lower() == '.md':
+					f = open(commentsDir + os.sep + commentFile, 'r', encoding='utf8')
+					commentText = f.read(-1)
+					f.close()
+					comment = Comment(self, commentText)
+					self.comments.append(comment)
+					self.hasCodeTag = self.hasCodeTag or comment.hasCodeTag()
+					self.codeLanguages.extend(comment.getCodeLanguages())
+		self.comments.sort()
+		for i, c in enumerate(self.comments):
+			c.setIndex(i + 1)
 	def _handleLink(self, match):
 		url = match.group(2)
 		if '/' not in url:
@@ -104,14 +176,20 @@ class Post:
 		return self.date
 	def isStaging(self):
 		return self.staging
+	def getPubdate(self):
+		return str(self.date) # Just happens to be valid YYYY-MM-DD format
 	def getPrintableDate(self):
 		return str(self.date)
+	def getBaseUrl(self):
+		return self.baseUrl
 	def getUrl(self, full=True):
 		if full:
 			return postsAbsoluteUrl + self.url
 		return self.url
 	def getUrlMd(self):
 		return self.url + '.md'
+	def getCommentFormUrl(self):
+		return postsUrl + '/reply:' + self.baseUrl
 	def getContent(self, withThumbnail=False, fullThumnail=False):
 		if withThumbnail:
 			if self.thumbUrl is not None:
@@ -136,31 +214,66 @@ class Post:
 		return len(self.codeLanguages)
 	def getCodeLanguages(self):
 		return self.codeLanguages
+	def getNumComments(self):
+		return len(self.comments)
+	def getComments(self):
+		return self.comments
 
-def substTemplate(template, p):
+def substTemplate(template, p, commentsTemplate=None):
 	content = template
 	content = content.replace('%title%', html.escape(p.getTitle()))
 	content = content.replace('%author%', html.escape(p.getAuthor()))
 	content = content.replace('%date%', html.escape(p.getPrintableDate()))
+	content = content.replace('%pubdate%', html.escape(p.getPubdate()))
 	content = content.replace('%url%', html.escape(p.getUrl()))
 	content = content.replace('%mdurl%', html.escape(p.getUrlMd()))
+	content = content.replace('%urlname%', html.escape(p.getBaseUrl()))
 	content = content.replace('%thumbnail%', html.escape(p.getThumb()))
+	content = content.replace('%blogdir%', html.escape(blogDirFromPostsDir))
+	content = content.replace('%commentsdir%', html.escape(blogDirFromPostsDir + os.sep + 'comments'))
+	content = content.replace('%numcomments%', html.escape(str(p.getNumComments())))
+	if p.getNumComments() == 0:
+		content = content.replace('%friendlycommentnum%', 'No comments')
+	elif p.getNumComments() == 1:
+		content = content.replace('%friendlycommentnum%', 'One comment')
+	else:
+		content = content.replace('%friendlycommentnum%', html.escape(str(p.getNumComments()) + ' comments'))
 	if p.getThumbUrl() is not None:
 		content = content.replace('%thumbnailurl%', html.escape(p.getThumbUrl()))
 	else:
 		content = content.replace('%thumbnailurl%', html.escape(p.getUrl()))
+	content = content.replace('%commentformurl%', html.escape(p.getCommentFormUrl()))
+	if '%commentliststart%' in content and '%commentlistend%' in content:
+		if p.getNumComments():
+			content = content.replace('%commentliststart%', '')
+			content = content.replace('%commentlistend%', '')
+		else:
+			content = content[:content.find('%commentliststart%')] + content[content.find('%commentlistend%') + len('%commentlistend%'):]
+	extraJS = []
+	extraCSS = []
+	if '%iscommentform%' in content:
+		content = content.replace('%iscommentform%', '')
+		extraJS.append('js_import("blog/comments/comment_form.js");')
+		extraCSS.append('@import "blog/comments/comment_form.scss";')
 	if p.hasCode():
+		extraCSS.append('@import "inconsolata.css";')
 		if p.hasCodeLanguages():
 			from pygments.formatters import HtmlFormatter
-			highlightCss = HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite')
-			content = content.replace('%extracss%', '<style>@import "inconsolata.css";\n' + highlightCss + '\n</style>')
-		else:
-			content = content.replace('%extracss%', '<style>@import "inconsolata.css";</style>')
+			extraCSS.append(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
+	if len(extraJS):
+		content = content.replace('%extrajs%', '<script>' + '\n'.join(extraJS) + '</script>')
+	else:
+		content = content.replace('%extrajs%', '')
+	if len(extraCSS):
+		content = content.replace('%extracss%', '<style>' + '\n'.join(extraCSS) + '</style>')
 	else:
 		content = content.replace('%extracss%', '')
 	if p.getLicense() is not None:
 		content = content.replace('%license%', p.getLicense())
 	content = content.replace('%content%', p.getContent())
+	if commentsTemplate is not None and '%comments%' in content:
+		# This must always be the last replacement, otherwise some smart commenters may post %stuff% and have it replaced.
+		content = content.replace('%comments%', '\n'.join([c.subst(commentsTemplate) for c in p.getComments()]))
 	return content
 
 if __name__ == '__main__':
@@ -207,18 +320,32 @@ if __name__ == '__main__':
 		templateF = open(templateFile, 'r', encoding='utf8')
 		template = templateF.read(-1)
 		templateF.close()
+		replyTemplateF = open(replyTemplateFile, 'r', encoding='utf8')
+		replyTemplate = replyTemplateF.read(-1)
+		replyTemplateF.close()
+		commentsTemplateF = open(commentsTemplateFile, 'r', encoding='utf8')
+		commentsTemplate = commentsTemplateF.read(-1)
+		commentsTemplateF.close()
+		postFilesInfo = {}
 		feedEntries = []
 		for p in os.listdir(filesystemPostsDir):
 			if p[-3:].lower() != '.md':
 				continue
+			postInfo = {}
+			postFilesInfo[p[:-3]] = postInfo
 			f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
 			content = f.read(-1)
 			f.close()
 			content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
 			post = Post(content, p[:-3])
-			f2 = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
-			f2.write(substTemplate(template, post))
-			f2.close()
+			postInfo['title'] = post.getTitle()
+			postInfo['url'] = post.getUrl()
+			f = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
+			f.write(substTemplate(template, post, commentsTemplate))
+			f.close()
+			f = open(filesystemPostsDir + os.sep + p[:-3] + '_reply.php', 'w', encoding='utf8')
+			f.write(substTemplate(replyTemplate, post, commentsTemplate))
+			f.close()
 			if not post.isStaging():
 				feedEntries.append({
 					'title': post.getTitle(),
@@ -248,3 +375,13 @@ if __name__ == '__main__':
 			entries = feedEntries
 		))
 		rss2Feed.close()
+		# Make comment system's list of posts
+		commentsPostList = open('comments/article_list.gen.php', 'w', encoding='utf8')
+		phpPostInfo = []
+		for p in postFilesInfo:
+			postInfo = []
+			for k, v in postFilesInfo[p].items():
+				postInfo.append(phpEscape(k) + ' => ' + phpEscape(v))
+			phpPostInfo.append(phpEscape(p) + ' => array(' + ', '.join(postInfo) + ')')
+		commentsPostList.write('<?php\n$all_articles = array(' + ', '.join(phpPostInfo) + ');\n?>')
+		commentsPostList.close()
