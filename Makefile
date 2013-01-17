@@ -15,7 +15,9 @@ STATIC_URL = /img
 ASSETS_URL = $(STATIC_URL)/assets
 STATIC_DIR = $(BUILD_DIR)$(STATIC_URL)
 ASSETS_DIR = $(BUILD_DIR)$(ASSETS_URL)
-DEPLOY_URL ?= perot@perot.me:www
+DEPLOY_SSH ?= perot@perot.me
+DEPLOY_DIR ?= www
+DEPLOY_URL ?= $(DEPLOY_SSH):$(DEPLOY_DIR)
 DEPLOY_PERMISSIONS = 750
 DEPLOY_PERMISSIONS_WRITABLE = 770
 COMMENTS_QUEUE_DIR = blog/comments/queue
@@ -82,6 +84,7 @@ chmod:
 
 deploy:
 	rsync -rzvvhupXct --exclude=".git" --exclude="$(COMMENTS_QUEUE_DIR)" --exclude="$(COMMENTS_NONCES_DIR)" --exclude-from=".gitignore" --delete-after --progress "$(BUILD_DIR)/" "$(DEPLOY_URL)/"
+	ssh "$(DEPLOY_SSH)" "mkdir -p '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)' && chmod '$(DEPLOY_PERMISSIONS_WRITABLE)' '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)'"
 
 clean:
 	rm -rf "$(BUILD_DIR)"
