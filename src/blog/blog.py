@@ -147,7 +147,7 @@ class Post:
 					f.close()
 					comment = Comment(self, commentText)
 					self.comments.append(comment)
-					self.hasCodeTag = self.hasCodeTag or comment.hasCodeTag()
+					self.hasCodeTag = self.hasCodeTag or comment.hasCode()
 					self.codeLanguages.extend(comment.getCodeLanguages())
 		self.comments.sort()
 		for i, c in enumerate(self.comments):
