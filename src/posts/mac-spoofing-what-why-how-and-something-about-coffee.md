@@ -11,10 +11,10 @@ Usually, a network interface comes with a fixed MAC address called the *burned-i
 [MAC spoofing] is the technique to effectively change the MAC address that your network interface appears to have. It doesn't change the burned-in address, it merely changes what other devices think your interface's MAC address is. It can be used for some legitimate and not-always-legitimate purposes:
 
 * Appearing as a legitimate device on a network which employs [MAC address whitelisting] (useful when your last network interface dies, and for [certain types of network attacks][ARP Request Replay Attack])
-* Avoiding tracking: Different MAC addresses means no device on the network can tell if it has already seen this device on this network before, or on another network. For example, Starbucks may wish to maintain a list of all MAC addresses accessing their WiFi access points and use this information to figure out someone's movements or simply to identify who their best customer is (or at least which one is *that guy* always hogging all the bandwidth)
-* Appearing as a different device to a network you've previously been on (hey, remember those "time-limited" free WiFi access points at the airport?)
+* Avoiding tracking: Different MAC addresses means no device on the network can tell if it has already seen this device on this network before, or on another network. For example, Starbucks may wish to maintain a list of all MAC addresses accessing their WiFi access points and use this information to figure out someone's movements or simply to identify who their best customer is (or at least which one is *that guy* always hogging all the bandwidth). Think they would never do that? [Think][Euclid Analytics - How it works]&nbsp;[again][City of Calgary - Bluetooth travel time system].
+* Appearing as a different device to a network you've previously been on. (Hey, remember those "time-limited" free WiFi access points at the airport?)
 * Avoiding profiling: The first three bytes of the MAC address identify the manufacturer of the device. Thus, the burned-in address gives away which company made the chip. Sometimes that's not important, but perhaps a hardware exploit exists in all network interfaces manufactured by $MANUFACTURER, thus changing your MAC address gives you a bit of security by obscurity. Or, more mundanely, perhaps you don't want a thief to be able to see that you have a shiny, new, and *very expensive* iThingy at your house simply by standing outside and looking all the MAC addresses broadcasted by all your WiFi devices.
-* [Bypassing futile roadblocks][Errata Security - I conceal my identity the same way Aaron was indicted for], and [unjustly getting prosecuted to death][EFF - Aaron Swartz's Death] over it
+* [Bypassing futile roadblocks][Slashdot - Feds Add 9 Felony Charges Against Swartz For JSTOR Hack], and [unjustly getting prosecuted to death][EFF - Aaron Swartz's Death] over it.
 * Wireless access points use MAC spoofing in order to provide multiple wireless networks with a single wireless interface. Recent routers often have this "guest network" feature which, when turned on, makes your router show up twice in the list of available access points: The regular network, and the guest network. This is a good thing, as it gives you some network-level isolation between machines. This way, even if your guests don't practice healthy security practices on their computing devices, at least they won't spread any nasty stuff through your LAN.
 
 Interestingly, while MAC addresses have thus far been limited in terms of tracking potential due to being confined to one's local network, this is about to change with [IPv6]. One of IPv6's addressing models, [stateless address autoconfiguration][Stateless address autoconfiguration], allows a device to acquire an address for itself by taking the 64-bit prefix of the network it is on, and using the 48-bit MAC address of its network interface to determine the value of the remaining 64 bits. The consequence of this scheme is that any website you connect to can figure out your MAC address from nothing but your IPv6 address. (More on that later.)
@@ -23,7 +23,7 @@ As you can see, there are many reasons as to one would want to spoof their MAC a
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To randomize MAC addresses, we will be using an aptly-named program called [GNU MAC Changer], available on most distributions under the `macchanger` package. Some distributions have a different package for the [Debian version of `macchanger`][Debian macchanger package], which includes some pretty important fixes such as an updated list of manufacturers, more granularity in the time value used for the random number generator's seed. On Arch, that package is known on the AUR as [`macchanger-debian`][macchanger-debian on the AUR]. This guide uses the output from the Debian version. There is also a GTK interface to it called [`macchanger-gtk`][macchanger-gtk], but we will not be using this. This guide also assumes that you are using [systemd] as init daemon.
+To randomize MAC addresses, we will be using an aptly-named program called [GNU MAC Changer], available on most distributions under the `macchanger` package. Some distributions have a different package for the [Debian version of `macchanger`][Debian macchanger package], which includes some pretty important fixes such as an updated list of manufacturers, more granularity in the time value used for the random number generator's seed. On Arch, that package is known on the AUR as [`macchanger-debian`][macchanger-debian on the AUR]. This guide uses the output from the Debian version. There is also a GTK interface to it called [`macchanger-gtk`][macchanger-gtk], but we will not be using this.
 
 ## Step 1: Preliminary data gathering
 
@@ -38,7 +38,7 @@ In order to spoof a network interface's MAC address, we first need to know which
 	       valid_lft forever preferred_lft forever
 	2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP qlen 1000
 	    link/ether xx:xx:xx:xx:xx:xx brd ff:ff:ff:ff:ff:ff
-	    inet .../xx brd ... scope global wired0
+	    inet .../xx brd ... scope global eth0
 	    inet6 .../xx scope link 
 	       valid_lft forever preferred_lft forever
 	4: tun0: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UNKNOWN qlen 100
@@ -147,13 +147,13 @@ That's an improvement, but it's still kinda fishy. You can try running the above
 	:::console
 	$ yaourt -S macchiato-git
 
-Or, if you're on another systemd-using distribution and you want to install it from scratch:
+Or, if you're on another distribution and you want to install it from scratch:
 
 	:::console
-	$ git clone git://perot.me/macchiato
-	$ sudo macchiato/install-systemd-service.sh
+	$ sudo git clone git://perot.me/macchiato /usr/share/macchiato
+	$ sudo mkdir /etc/macchiato.d
 
-Now there is some configuration to do. The procedure above (whichever one you used) created a directory called `/etc/macchiato.d/`. In it, you need to create one configuration file per interface you wish to perform MAC spoofing for. A sample configuration file is provided at `/etc/macchiato.d/sample.sh.example`. It looks like this (the actual file also has in-depth comments):
+Now there is some configuration to do. The procedure above (whichever one you used) created a directory called `/etc/macchiato.d/`. In it, you need to create one configuration file per interface you wish to perform MAC spoofing for. A sample configuration file is provided at `/usr/share/macchiato/conf/sample.sh.example`. It looks like this (the actual file also has in-depth comments):
 
 	:::bash
 	ouiList=(
@@ -169,54 +169,37 @@ The names in the `ouiList` entry refer to files in `/usr/share/macchiato/oui/` i
 
 Create one such configuration file for each network interface (for example, to spoof `wlan0`'s MAC address, create `/etc/macchiato.d/wlan0.sh`).
 
-Once all of that is done, run the service to see if everything works:
+Once all of that is done, run it to see if everything works:
 
 	:::console
-	$ sudo systemctl start macchiato
+	$ sudo /usr/share/macchiato/macchiato /etc/macchiato.d
 
-You don't need to bring the interface `up` or `down` manually; it should handle that for you. If `systemctl` yells at you, then there's probably a configuration error of some kind. Check out the service status:
-
-	:::console
-	$ sudo systemctl status macchiato
-
-It will tell you why the service can't start. Once you do get it working, check out if the MAC address has properly changed according to your tastes:
+It will report any error it encounters as it goes along. Once you get everything working, check out if the MAC address has properly changed according to your tastes:
 
 	:::console
 	$ macchanger wlan0
 
 All good? Then it's time to...
 
-## Step 4: Make it start on boot
+## Step 4: Automatically spoofing the MAC address
 
-If you followed step 3 all the way up to the end and installed `macchiato`, then you're almost done! You just need to enable the service:
-
-	:::console
-	$ sudo systemctl enable macchiato
-
-If you haven't installed macchiato, then it isn't much more difficult. You just need to write a systemd service file to do the work:
+If you followed step 3 all the way up to the end and installed `macchiato`, then you're almost done! You just need to generate the udev rules:
 
 	:::console
-	$ sudo $EDITOR /etc/systemd/system/macspoof.service
+	$ sudo /usr/share/macchiato/install-udev-rules.sh
+
+If you haven't installed macchiato, then things are a bit more difficult. You need to write udev rules to run `macchanger` as soon as the network interface appears:
+
+	:::console
+	$ sudo $EDITOR /etc/udev/rules.d/20-macspoof.rules
 
 <!-- Hacky comment to make markdown split this into two code blocks -->
 
-	:::ini
-	[Unit]
-	Description=MAC address spoofing
-	Before=NetworkManager.service dhcpcd.service dhcpcd@.service netcfg.service netcfg@.service wicd.service
-	
-	[Service]
-	Type=oneshot
-	ExecStart=/usr/bin/macchanger -A wlan0
-	# Need to spoof another interface? Just add another ExecStart line:
-	ExecStart=/usr/bin/macchanger -A eth0
-	
-	[Install]
-	WantedBy=network.target
+	ACTION=="add", ATTR{address}=="hardware mac address here", RUN+="/usr/bin/macchanger -A wlan0"
+	# Need to spoof another interface? Just add another line:
+	ACTION=="add", ATTR{address}=="hardware mac address here", RUN+="/usr/bin/macchanger -A eth0"
 
-There's a bunch of network managers up there in the `Before` line. You don't need all of them, obviously, you just need the one you use. It doesn't hurt to leave them all there though; systemd will figure things out. Just need to enable it:
-
-	$ sudo systemctl enable macspoof
+Make sure you put the *hardware MAC address* of the interfaces there, not the spoofed ones you just generated. These rules will run `macchanger` as soon as `udev` notices a new device (`ACTION=="add"`) that has the specified (non-spoofed-yet) MAC address. This includes boot time, of course, but it also includes devices added later, such as USB Wi-Fi adapters.
 
 You're done! You may want to reboot and check `macchanger wlan0` once again just to make sure everything works.
 
@@ -246,7 +229,9 @@ Happy spoofing.
 [MAC spoofing]: https://en.wikipedia.org/wiki/MAC_spoofing
 [MAC address whitelisting]: https://en.wikipedia.org/wiki/Whitelist#LAN_whitelists
 [ARP Request Replay Attack]: http://www.aircrack-ng.org/doku.php?id=arp-request_reinjection
-[Errata Security - I conceal my identity the same way Aaron was indicted for]: http://erratasec.blogspot.com/2013/01/i-conceal-my-identity-same-way-aaron.html
+[Euclid Analytics - How it works]: http://euclidanalytics.com/product/how/
+[City of Calgary - Bluetooth travel time system]: https://www.calgary.ca/Transportation/Roads/Pages/Traffic/Traffic-management/Bluetooth-detection-system.aspx
+[Slashdot - Feds Add 9 Felony Charges Against Swartz For JSTOR Hack]: http://yro.slashdot.org/story/12/09/18/2249200/feds-add-9-felony-charges-against-swartz-for-jstor-hack
 [EFF - Aaron Swartz's Death]: https://www.eff.org/deeplinks/2013/01/aaron-swartz-fix-draconian-computer-crime-law
 [IPv6]: https://en.wikipedia.org/wiki/IPv6
 [Stateless address autoconfiguration]: https://en.wikipedia.org/wiki/IPv6_address#Stateless_address_autoconfiguration
@@ -258,7 +243,6 @@ Happy spoofing.
 [Debian macchanger package]: http://packages.debian.org/search?keywords=macchanger
 [macchanger-debian on the AUR]: https://aur.archlinux.org/packages/macchanger-debian
 [macchanger-gtk]: https://aur.archlinux.org/packages/macchanger-gtk
-[systemd]: https://en.wikipedia.org/wiki/Systemd
 [OpenVPN]: https://openvpn.net/
 [VirtualBox]: https://www.virtualbox.org/
 [udev]: https://en.wikipedia.org/wiki/Udev
