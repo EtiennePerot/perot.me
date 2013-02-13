@@ -209,7 +209,11 @@ Remember that thing about IPv6 [stateless address autoconfiguration][Stateless a
 
 An effective way of mitigating the privacy risk of MAC addresses embedded in IPv6 addresses, regardless of whether these privacy extensions are enabled or not, is simply to not use your device's burned-in address: that's MAC spoofing. But while you're at it tweaking your system, you may might as well enable them anyway, right? This is done by setting some kernel parameters. Drop a new file in `/etc/sysctl.d/`:
 
+	:::console
 	$ sudo $EDITOR /etc/sysctl.d/10-ipv6-privacy-extensions.conf
+
+<!-- Hacky comment to make markdown split this into two code blocks -->
+
 	net.ipv6.conf.all.use_tempaddr = 2
 	net.ipv6.conf.default.use_tempaddr = 2
 	

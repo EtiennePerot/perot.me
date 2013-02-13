@@ -283,9 +283,9 @@ if __name__ == '__main__':
 		templateF.close()
 		posts = []
 		for p in os.listdir(filesystemPostsDir):
-			if p[-3:].lower() != '.md':
+			if not os.path.isdir(filesystemPostsDir + os.sep + p):
 				continue
-			f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
+			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '.md', 'r', encoding='utf8')
 			content = f.read(-1)
 			f.close()
 			# Extract excerpt
@@ -297,7 +297,7 @@ if __name__ == '__main__':
 				pastBreakmark = pastBreakmark or l == breakMark
 				if not pastBreakmark:
 					excerpt +=  l + '\n'
-			post = Post(excerpt, p[:-3])
+			post = Post(excerpt, p)
 			if not post.isStaging():
 				posts.append(post)
 		posts.sort(key = lambda p : p.getDate(), reverse=True)
@@ -329,21 +329,21 @@ if __name__ == '__main__':
 		postFilesInfo = {}
 		feedEntries = []
 		for p in os.listdir(filesystemPostsDir):
-			if p[-3:].lower() != '.md':
+			if not os.path.isdir(filesystemPostsDir + os.sep + p):
 				continue
 			postInfo = {}
-			postFilesInfo[p[:-3]] = postInfo
-			f = open(filesystemPostsDir + os.sep + p, 'r', encoding='utf8')
+			postFilesInfo[p] = postInfo
+			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '.md', 'r', encoding='utf8')
 			content = f.read(-1)
 			f.close()
 			content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
-			post = Post(content, p[:-3])
+			post = Post(content, p)
 			postInfo['title'] = post.getTitle()
 			postInfo['url'] = post.getUrl()
-			f = open(filesystemPostsDir + os.sep + p[:-3] + '.html', 'w', encoding='utf8')
+			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '.html', 'w', encoding='utf8')
 			f.write(substTemplate(template, post, commentsTemplate))
 			f.close()
-			f = open(filesystemPostsDir + os.sep + p[:-3] + '_reply.php', 'w', encoding='utf8')
+			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '_reply.php', 'w', encoding='utf8')
 			f.write(substTemplate(replyTemplate, post, commentsTemplate))
 			f.close()
 			if not post.isStaging():
