@@ -76,6 +76,9 @@ Then, create a file in `/etc/udev/rules.d/` that looks like this:
 
 	:::console
 	$ sudo $EDITOR /etc/udev/rules.d/10-network-interface-names.rules
+
+~--~
+
 	SUBSYSTEM=="net", ATTR{address}=="00:11:22:33:44:55", NAME="wired"
 	SUBSYSTEM=="net", ATTR{address}=="66:77:88:99:AA:BB", NAME="wifi"
 
@@ -85,6 +88,9 @@ Each line contains the MAC address of the network interface, along with the desi
 
 	:::console
 	$ sudo $EDITOR /etc/udev/rules.d/10-network-interface-names.rules
+
+~--~
+
 	SUBSYSTEM=="net", ATTR{address}=="00:11:22:33:44:55", NAME="wired"
 	SUBSYSTEM=="net", ATTR{address}=="66:77:88:99:AA:BB", NAME="wifi"
 	SUBSYSTEM=="net", KERNEL=="tun0", NAME="vpn"
@@ -193,7 +199,7 @@ If you haven't installed macchiato, then things are a bit more difficult. You ne
 	:::console
 	$ sudo $EDITOR /etc/udev/rules.d/20-macspoof.rules
 
-<!-- Hacky comment to make markdown split this into two code blocks -->
+~--~
 
 	ACTION=="add", ATTR{address}=="hardware mac address here", RUN+="/usr/bin/macchanger -A wlan0"
 	# Need to spoof another interface? Just add another line:
@@ -212,7 +218,7 @@ An effective way of mitigating the privacy risk of MAC addresses embedded in IPv
 	:::console
 	$ sudo $EDITOR /etc/sysctl.d/10-ipv6-privacy-extensions.conf
 
-<!-- Hacky comment to make markdown split this into two code blocks -->
+~--~
 
 	net.ipv6.conf.all.use_tempaddr = 2
 	net.ipv6.conf.default.use_tempaddr = 2

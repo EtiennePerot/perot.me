@@ -9,7 +9,7 @@ blogInfo = {
 	'author_link': 'https://perot.me/'
 }
 filesystemPostsDir = '../posts'
-blogDirFromPostsDir = '../blog'
+blogDirFromPostsDir = '../../blog'
 postsUrl = ''
 postsAbsoluteUrl = 'https://perot.me'
 postsResourceUrl = '/posts-img'

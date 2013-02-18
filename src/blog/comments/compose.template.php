@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div id="main">
-			<exec>../nav.py blog '%commentformurl%' 'Compose Reply'</exec>
+			<exec>../../nav.py blog '%commentformurl%' 'Compose Reply'</exec>
 			<include>sidebar.include.html</include>
 			<div id="content">
 				<h2>Replying to: <a href="%url%" title="%title%">%title%</a></h2>
