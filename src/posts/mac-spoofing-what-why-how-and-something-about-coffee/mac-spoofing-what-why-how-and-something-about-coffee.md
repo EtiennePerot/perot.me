@@ -171,7 +171,7 @@ Now there is some configuration to do. The procedure above (whichever one you us
 		00:26:bb # Apple, Inc.
 	)
 
-The names in the `ouiList` entry refer to files in `/usr/share/macchiato/oui/` if you installed the Arch package, or `/wherever/you/cloned/it/macchiato/oui/` if you cloned it yourself. Each of these files contains a list of common OUI prefixes corresponding to a certain category of network interfaces. For example, `wireless_laptop` correspond to OUI prefixes of onboard wireless chips found within laptop computers. If you have a "common" computer, then feel free to post a comment below listing your OUI prefixes of your network adapters. make sure to specify which category of network adapter each OUI prefix corresponds to. Or you can send a pull request on the [macchiato GitHub repository][macchiato on GitHub]. Or [the Bitbucket one][macchiato on Bitbucket]. Whichever you prefer.
+The names in the `ouiList` entry refer to files in `/usr/share/macchiato/oui/` if you installed the Arch package, or `/wherever/you/cloned/it/macchiato/oui/` if you cloned it yourself. Each of these files contains a list of common OUI prefixes corresponding to a certain category of network interfaces. For example, `wireless_laptop` correspond to OUI prefixes of onboard wireless chips found within laptop computers. If you have "common enough" equipment, then feel free to post a comment below listing the OUI prefixes of your network adapters. Make sure to specify which class of network adapter each OUI prefix corresponds to, and the precise model or origin. You can also send a pull request on the [macchiato GitHub repository][macchiato on GitHub] or [the Bitbucket one][macchiato on Bitbucket], whichever you prefer.
 
 Create one such configuration file for each network interface (for example, to spoof `wlan0`'s MAC address, create `/etc/macchiato.d/wlan0.sh`).
 
@@ -192,7 +192,7 @@ All good? Then it's time to...
 If you followed step 3 all the way up to the end and installed `macchiato`, then you're almost done! You just need to generate the udev rules:
 
 	:::console
-	$ sudo /usr/share/macchiato/install-udev-rules.sh
+	$ sudo /usr/share/macchiato/install-udev-rules.sh /etc/macchiato.d
 
 If you haven't installed macchiato, then things are a bit more difficult. You need to write udev rules to run `macchanger` as soon as the network interface appears:
 
