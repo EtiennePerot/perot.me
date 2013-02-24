@@ -100,11 +100,11 @@ This gives you the SSH fingerprint of the server, and the fingerprint of the PGP
 The next step is to publish the key to a PGP keyserver. Again, Monkeysphere has a handy function for that:
 
 	:::console
-	root@cervo # monkeysphere publish-key
+	root@cervo # monkeysphere-host publish-key
 
 It will ask you if you are sure and will then send the key to a keyserver (the default is currently `pool.sks-keyservers.net`; this can be changed in the configuration files in `/etc/monkeysphere`).
 
-Now we need to import the key on Dave's machine (Demin).
+Now we need to import the key on Dave's machine (Demin). Tihs may fail if you execute it instantly afterwards; wait a little bit for the keyserver to synchronize their keys between each other.
 
 	:::console
 	dave@demin $ gpg --recv-keys 0A73F919251C7D6B579C214424F32D4FD9BA852B
@@ -193,9 +193,9 @@ If you still have access to the host's private service key, you can also revoke 
 Next, regenerate the host's private keys:
 
 	:::console
-	root@cervo # rc.d stop sshd
+	root@cervo # systemctl stop sshd
 	root@cervo # rm /etc/ssh/ssh_host_*
-	root@cervo # rc.d start sshd
+	root@cervo # systemctl start sshd
 
 `sshd` will generate some new keys as it starts. Once done, follow the same instructions as described in the "Signing the fingerprint" section and you're done.
 
@@ -331,7 +331,7 @@ Now, the scary part: You need to restart `sshd` so that your configuration chang
 If everything looks good (as it does above), then restart sshd:
 
 	:::console
-	root@cervo # rc.d restart sshd
+	root@cervo # systemctl restart sshd
 
 Before you can try it out, however, we still need to set up the client side of things. Thankfully, this is very easy.
 
