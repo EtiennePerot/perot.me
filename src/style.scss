@@ -23,6 +23,9 @@ $footerColor: rgba(192, 192, 192, 0.5);
 $linkColor: #634646;
 $linkHoverColorChange: #400000;
 $linkHoverOpacify: 0.5;
+$postGradientColor1: rgba(127, 127, 127, 0);
+$postGradientColor2: rgba(127, 127, 127, 0.75);
+$postGradientDirection: left;
 
 body {
 	background: inline-image("/img/background.png") $bodyBackground;
@@ -214,6 +217,16 @@ p code {
 		}
 		article:first-child {
 			padding-top: 0em;
+		}
+		.post-separator {
+			width: 75%;
+			margin-top: 2.5em;
+			margin-bottom: 2.5em;
+			border: 0em;
+			background-image: -webkit-linear-gradient($postGradientDirection, $postGradientColor1, $postGradientColor2, $postGradientColor1);
+			background-image: -moz-linear-gradient($postGradientDirection, $postGradientColor1, $postGradientColor2, $postGradientColor1);
+			background-image: -ms-linear-gradient($postGradientDirection, $postGradientColor1, $postGradientColor2, $postGradientColor1);
+			background-image: -o-linear-gradient($postGradientDirection, $postGradientColor1, $postGradientColor2, $postGradientColor1); 
 		}
 		#cv {
 			li {

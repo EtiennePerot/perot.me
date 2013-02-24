@@ -19,6 +19,7 @@ templateFile = 'blogpost.template.html'
 replyTemplateFile = 'comments/compose.template.php'
 commentsTemplateFile = 'comments/comment.template.html'
 excerptTemplateFile = 'blogpost-excerpt.template.html'
+separatorTemplateFile = 'blogpost-excerpt-separator.template.html'
 atomFile = '../posts.atom'
 rss2File = '../posts.rss2'
 breakMark = '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
@@ -278,6 +279,9 @@ def substTemplate(template, p, commentsTemplate=None):
 
 if __name__ == '__main__':
 	if '--homepage' in sys.argv[1:]:
+		templateSeparatorF = open(separatorTemplateFile, 'r', encoding='utf8')
+		templateSeparator = templateSeparatorF.read(-1)
+		templateSeparatorF.close()
 		templateF = open(excerptTemplateFile, 'r', encoding='utf8')
 		template = templateF.read(-1)
 		templateF.close()
@@ -314,6 +318,8 @@ if __name__ == '__main__':
 				print(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
 		else:
 			for p in posts:
+				if p != posts[0]:
+					print(templateSeparator)
 				print(substTemplate(template, p))
 
 	if '--make' in sys.argv[1:]:
