@@ -12,4 +12,4 @@ Licensing
 
 [https://perot.me/]: https://perot.me/
 [Oxygen Icons project]: http://www.oxygen-icons.org/
-[Creative Commons Attribution-ShareAlike 3.0 Unported]: https://creativecommons.org/licenses/by-sa/3.0/
+[Creative Commons Attribution-ShareAlike 3.0 Unported license]: https://creativecommons.org/licenses/by-sa/3.0/
