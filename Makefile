@@ -6,10 +6,12 @@
 #	gifsicle (http://www.lcdf.org/gifsicle/)
 #	inkscape (http://inkscape.org/)
 #	png2ico (http://www.winterdrache.de/freeware/png2ico/)
+#       zopfli (https://code.google.com/p/zopfli/)
 #	Probably some others that I forgot
 
 SHELL = bash
 SRC_DIR = src
+OLD_BUILD_DIR = old-build
 BUILD_DIR = build
 STATIC_URL = /img
 ASSETS_URL = $(STATIC_URL)/assets
@@ -69,14 +71,7 @@ html:
 	done < <(find "$(BUILD_DIR)" \( -name '*.htm' -o -name '*.html' -o -name '*.xhtml' -o -name '*.php' \) -type f -print0)
 
 compress:
-	while IFS= read -d $$'\0' -r file ; do \
-		if [ ! -f "`echo "$$file" | sed 's/\.gz$$//i'`" ]; then rm -f "$$file"; fi;\
-	done < <(find "$(BUILD_DIR)" -name '*.gz' -type f -print0)
-	while IFS= read -d $$'\0' -r file ; do \
-		if [ ! -f "$$file.gz" -o "$$file.gz" -ot "$$file" ]; then \
-			gzip -cn9 < "$$file" > "$$file.gz"; \
-		fi; \
-	done < <(find "$(BUILD_DIR)" ! -name '*.gz' -type f -print0)
+	res/gzip-build.sh
 
 chmod:
 	chmod -R "$(DEPLOY_PERMISSIONS)" "$(BUILD_DIR)"
@@ -87,4 +82,4 @@ deploy:
 	ssh "$(DEPLOY_SSH)" "mkdir -p '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)' && chmod '$(DEPLOY_PERMISSIONS_WRITABLE)' '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)'"
 
 clean:
-	rm -rf "$(BUILD_DIR)"
+	if [ -d "$(BUILD_DIR)" ]; then rm -rf "$(OLD_BUILD_DIR)" ; mv "$(BUILD_DIR)" "$(OLD_BUILD_DIR)"; fi

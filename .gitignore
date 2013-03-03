@@ -1,4 +1,5 @@
 build
+old-build
 *.pyc
 *.pyo
 .directory
