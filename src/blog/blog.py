@@ -133,6 +133,9 @@ class Post:
 			self.thumbUrl = m.Meta['thumbnailurl'][0]
 			if '/' not in self.thumbUrl and ':' not in self.thumbUrl:
 				self.thumbUrl = (self.resourceUrl + '/' + self.thumbUrl).replace('//', '/')
+		self.canonicalImage = self.thumb
+		if 'canonicalimage' in m.Meta:
+			self.canonicalImage = self.resourceUrl + '/' + m.Meta['canonicalimage'][0]
 		self.license = None
 		if 'license' in m.Meta:
 			f = open(licenseDir + os.sep + m.Meta['license'][0].lower() + '.include.html', 'r', encoding='utf8')
@@ -189,6 +192,10 @@ class Post:
 		return self.url
 	def getUrlMd(self):
 		return self.url + '.md'
+	def getCanonicalImage(self, full=True):
+		if full:
+			return postsAbsoluteUrl + self.canonicalImage
+		return self.canonicalImage
 	def getCommentFormUrl(self):
 		return postsUrl + '/reply:' + self.baseUrl
 	def getContent(self, withThumbnail=False, fullThumnail=False):
@@ -227,6 +234,7 @@ def substTemplate(template, p, commentsTemplate=None):
 	content = content.replace('%date%', html.escape(p.getPrintableDate()))
 	content = content.replace('%pubdate%', html.escape(p.getPubdate()))
 	content = content.replace('%url%', html.escape(p.getUrl()))
+	content = content.replace('%canonicalimage%', html.escape(p.getCanonicalImage()))
 	content = content.replace('%mdurl%', html.escape(p.getUrlMd()))
 	content = content.replace('%urlname%', html.escape(p.getBaseUrl()))
 	content = content.replace('%thumbnail%', html.escape(p.getThumb()))
