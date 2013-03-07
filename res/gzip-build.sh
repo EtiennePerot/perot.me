@@ -41,5 +41,6 @@ for file in "${sortedList[@]}"; do
 			echo "Compressing '$file' (new file)"
 			zopfli --i1000 "$file" || exit 1
 		fi
+		touch -r "$file" "$file.gz"
 	fi
 done
