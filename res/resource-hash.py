@@ -1,6 +1,6 @@
 import os, re, hashlib, filefilter
 
-resourceR = re.compile('([(\'"])(?:(?:https?:)?//perot\.me)?/((?:posts-)?img/[^?&)\'"]+)(?:\?[^\'")]*)?([\'")])')
+resourceR = re.compile('([(\'"])(?:(?:https?:)?//perot\.me)?/((?:posts-)?img/[^?&)\'"]+)(?:\?[^\'")]*)?([\'")])', re.IGNORECASE)
 
 def parseResource(f, m):
 	url = m.group(2)
@@ -20,4 +20,6 @@ def parseResource(f, m):
 	return m.group(1) + '/' + url + m.group(3)
 
 def process(f, content):
-	return resourceR.sub(lambda x : parseResource(f, x), content)
+	if '<body' in content:
+		return content[:content.find('<body')] +  resourceR.sub(lambda x : parseResource(f, x), content[content.find('<body'):])
+	return content
