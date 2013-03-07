@@ -178,6 +178,14 @@ p code {
 				margin-top: 0.5em;
 				color: #909090;
 			}
+			img {
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.license img {
+				display: inline;
+			}
 			.author, .date {
 				font-weight: bold;
 			}
@@ -205,6 +213,11 @@ p code {
 					margin-left: auto;
 					margin-right: auto;
 				}
+			}
+			.footnote {
+				font-size: .85em;
+				opacity: 0.55;
+				font-style: italic;
 			}
 			footer {
 				font-size: .85em;
