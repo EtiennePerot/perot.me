@@ -105,6 +105,8 @@ Now may be a good time to reassess whether or not Ubuntu's divergence has arrive
 
 [![Ubuntu silo image thumbnail][]][Ubuntu silo image]
 
+**Update**: [Jono Bacon responds to community concerns]. Mark Shuttleworth also posted [some][Mark Shuttleworth: Not convinced by rolling releases (includes some community matters)]&nbsp;[blog][Mark Shuttleworth: Misplaced criticism]&nbsp;[posts][Mark Shuttleworth: All the faces of Ubuntu] in response to criticism. It is good to see them responding to the community's concerns.
+
 <span class="footnote">
 **Image acknowledgements**:
 	[Starry Night](http://www.publicdomainpictures.net/view-image.php?image=23995&picture=starry-night&large=1),
@@ -218,3 +220,7 @@ Now may be a good time to reassess whether or not Ubuntu's divergence has arrive
 [Ubuntu Brainstorm: Cannot read the word "Linux" anywhere]: http://brainstorm.ubuntu.com/idea/27182/
 [Ubuntu.com]: http://www.ubuntu.com/
 [Information silo]: https://en.wikipedia.org/wiki/Information_silo
+[Jono Bacon responds to community concerns]: http://www.jonobacon.org/2013/03/08/thoughts-on-recent-community-concerns/
+[Mark Shuttleworth: Not convinced by rolling releases (includes some community matters)]: http://www.markshuttleworth.com/archives/1228
+[Mark Shuttleworth: Misplaced criticism]: http://www.markshuttleworth.com/archives/1232
+[Mark Shuttleworth: All the faces of Ubuntu]: http://www.markshuttleworth.com/archives/1235
