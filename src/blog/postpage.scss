@@ -32,8 +32,10 @@ $commentHrGradientDirection: left;
 		font-size: 1.1em;
 		font-weight: normal;
 	}
-	.comment-number {
+	.comment-number, .comment-number:hover {
 		font-size: 1.1em;
+		color: #202020;
+		border-bottom-color: #202020;
 	}
 	.comment-author, .comment-author a {
 		font-weight: bold;
