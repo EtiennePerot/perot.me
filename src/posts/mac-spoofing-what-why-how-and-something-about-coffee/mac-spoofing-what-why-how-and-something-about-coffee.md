@@ -84,17 +84,6 @@ Then, create a file in `/etc/udev/rules.d/` that looks like this:
 
 Each line contains the MAC address of the network interface, along with the desired name it should have. This name can be anything descriptive to you, just don't use fancy characters. You will need to reboot for the changes to take place. I suggest you do it now, because the rest of the guide requires you to type the correct network interface names.
 
-**Bonus**: You could rename the OpenVPN interface as well, even though it doesn't have a MAC address:
-
-	:::console
-	$ sudo $EDITOR /etc/udev/rules.d/10-network-interface-names.rules
-
-~--~
-
-	SUBSYSTEM=="net", ATTR{address}=="00:11:22:33:44:55", NAME="wired"
-	SUBSYSTEM=="net", ATTR{address}=="66:77:88:99:AA:BB", NAME="wifi"
-	SUBSYSTEM=="net", KERNEL=="tun0", NAME="vpn"
-
 Rebooted? Good! Let's continue.
 
 ## Step 2: Installing the package
