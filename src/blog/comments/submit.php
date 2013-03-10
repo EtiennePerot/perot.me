@@ -59,7 +59,7 @@ if(!isset($_REQUEST['message']) || empty($_REQUEST['message'])) {
 if(strlen($_REQUEST['message']) > MAX_POST_LENGTH) {
 	error('Message too long. Keep things short!');
 }
-$message = trim(htmlspecialchars($_REQUEST['message']));
+$message = trim(strip_tags($_REQUEST['message']));
 
 # Check if the user can comment
 $comments_dir = QUEUE_DIR.'/'.$article;
