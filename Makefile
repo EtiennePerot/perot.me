@@ -6,7 +6,7 @@
 #	gifsicle (http://www.lcdf.org/gifsicle/)
 #	inkscape (http://inkscape.org/)
 #	png2ico (http://www.winterdrache.de/freeware/png2ico/)
-#       zopfli (https://code.google.com/p/zopfli/)
+#	zopfli (https://code.google.com/p/zopfli/)
 #	Probably some others that I forgot
 
 SHELL = bash
@@ -61,7 +61,7 @@ html:
 	while IFS= read -d $$'\0' -r file ; do \
 		echo "Processing $$file"; \
 		res/filefilter.py $(HTML_FILTERS_BEFORE_COMPRESSION) "$$file"; \
-		if htmlcompressor --preserve-php --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --remove-https-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
+		if htmlcompressor --preserve-php --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
 			mv "$$file.compressed" "$$file"; \
 		else \
 			rm -f "$$file.compressed"; \
