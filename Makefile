@@ -27,7 +27,7 @@ COMMENTS_NONCES_DIR = blog/comments/nonces
 HTML_FILTERS_BEFORE_COMPRESSION ?= +process-exec +process-include +js-import +scss-import +resource-hash +duplicate-style
 HTML_FILTERS_AFTER_COMPRESSION ?= +fix-openid +mark-compressed +free-js
 
-all: clean build compress chmod deploy
+all: clean build compress piwik chmod deploy
 
 build: build-init logo ajax blog css html cv
 
@@ -72,6 +72,10 @@ html:
 
 compress:
 	res/gzip-build.sh
+
+piwik:
+	mkdir -p "$(BUILD_DIR)/cron"
+	cp res/piwik.sh "$(BUILD_DIR)/cron/"
 
 chmod:
 	chmod -R "$(DEPLOY_PERMISSIONS)" "$(BUILD_DIR)"

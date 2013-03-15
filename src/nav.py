@@ -28,6 +28,11 @@ navLinks = [
 		'name': 'resume',
 		'label': 'CV',
 		'url': '/cv'
+	},
+	{
+		'name': 'privacy',
+		'label': 'Privacy',
+		'url': '/privacy'
 	}
 ]
 
