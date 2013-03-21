@@ -1,6 +1,6 @@
-This site uses a combination of [nginx]'s server logs, and [Piwik] (in [log analytics mode][Piwik Server Log Analytics]) to provide traffic information.
+This site uses a combination of [nginx]'s server logs and [Piwik] (in [log analytics mode][Piwik Server Log Analytics]) to gather and store traffic statistics.
 
-No information is shared with third parties.
+No information is shared with third parties; this site does not use any third-party tracking resource whatsoever, with some temporary exceptions during [Internet Defense League] campaigns.
 
 ## nginx logs
 
@@ -54,6 +54,7 @@ nginx logs have no opt-out option, but only last for 7 days. If you would like t
 [nginx]: http://nginx.org/
 [Piwik]: https://piwik.org/
 [Piwik Server Log Analytics]: https://piwik.org/log-analytics/
+[Internet Defense League]: http://internetdefenseleague.org/
 [Log rotation]: https://en.wikipedia.org/wiki/Log_rotation
 [IP address]: https://en.wikipedia.org/wiki/IP_address
 [HTTP Referer header]: https://en.wikipedia.org/wiki/HTTP_referer
