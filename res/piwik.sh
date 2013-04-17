@@ -9,6 +9,7 @@ URL_EXCLUDES=(
 	'/tt-rss'
 	'/mozilla-sync'
 	'/piwik' '/usr/share/webapps/piwik'
+	'/radicale'
 	'/robots.txt'
 	'//(?:[-\w]+\.)*[-\w]+/.*MSIE 6' # MSIE 6 not supporting protocol-relative URLs; don't care
 )
