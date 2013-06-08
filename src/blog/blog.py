@@ -65,7 +65,7 @@ def phpEscape(s):
 class Comment:
 	def __init__(self, post, text):
 		self.post = post
-		self.rawText = html.escape(text)
+		self.rawText = text
 		self.index = None
 		m = md()
 		self.content = m.convert(self.rawText)
