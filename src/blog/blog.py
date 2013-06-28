@@ -31,6 +31,9 @@ import os, sys, datetime, html, re, markdown
 import xmldefs
 from mannimod import ManniStyle_mod
 
+sys.stdin = sys.stdin.detach()
+sys.stdout = sys.stdout.detach()
+
 scriptDir = os.path.dirname(sys.argv[0])
 if scriptDir:
 	os.chdir(scriptDir)
@@ -320,15 +323,15 @@ if __name__ == '__main__':
 				hasCode = hasCode or p.hasCode()
 				hasCodeLanguages = hasCodeLanguages or hasCode or p.hasCodeLanguages()
 			if hasCode:
-				print('@import "inconsolata.css";')
+				sys.stdout.write(b'@import "inconsolata.css";')
 			if hasCodeLanguages:
 				from pygments.formatters import HtmlFormatter
-				print(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite'))
+				sys.stdout.write(HtmlFormatter(style=ManniStyle_mod).get_style_defs('.codehilite').encode('utf8'))
 		else:
 			for p in posts:
 				if p != posts[0]:
-					print(templateSeparator)
-				print(substTemplate(template, p))
+					sys.stdout.write(templateSeparator.encode('utf8'))
+				sys.stdout.write(substTemplate(template, p).encode('utf8'))
 
 	if '--make' in sys.argv[1:]:
 		templateF = open(templateFile, 'r', encoding='utf8')
