@@ -39,8 +39,11 @@ A lot of other, smaller projects, using various programming languages and all op
 * **GitHub**: [https://github.com/EtiennePerot][GitHub]
 * **Bitbucket**: [https://bitbucket.org/EtiennePerot][Bitbucket]
 
+\pagebreak
+
 Employment
 ----------
+* **Software Engineer - Site Reliability Engineer** at **[Google]** (_August 2013 - present_)
 * **Software developer** (internship) at **[Dental Wings]** (_June 2012 — July 2012_)  
   Continued work on the metrology Java application. Created a 3D application for visualization, modification, analysis, automated adjustment, metrics computation, comparison, and database archival of data from the calibration tables of multiple scanner models.  
   This allowed the company to significantly improve scanning accuracy on already-deployed scanners without recalling them, and to obtain more and better metrics for the scanning quality of future scanners.  
@@ -69,6 +72,7 @@ Education
 [McGill University]: https://www.mcgill.ca/
 [College Stanislas]: http://stanislas.qc.ca/montreal/
 [Mammoth Project]: http://mammoth.cs.mcgill.ca/
+[Google]: https://www.google.com/about/jobs/teams/engineering/systems/
 [Dental Wings]: http://www.dental-wings.com/
 [Clinique Ostopathie-Santé]: http://osteopathiesante.com/
 [Java]: https://en.wikipedia.org/wiki/Java_%28programming_language%29
