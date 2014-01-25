@@ -17,11 +17,14 @@ def processInclude(f, m):
 	if toInclude is None:
 		return '<span class="error">Could not include file ' + m.group(2).strip() + '</span>'
 	isMarkdown = 'markdown' in m.group(1).lower()
+	hasPagebreak = 'replacepagebreak' in m.group(1).lower()
 	handle = open(toInclude, 'r', encoding='utf8')
 	content = handle.read(-1)
 	handle.close()
 	if isMarkdown:
 		content = rLinkMatch.sub(handleLink, content)
+		if hasPagebreak:
+			content = content.replace('\\pagebreak', '')
 		content = markdown.Markdown(
 			extensions=['codehilite', 'meta', 'sane_lists'],
 			extensions_configs={},
