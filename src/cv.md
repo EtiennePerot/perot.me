@@ -1,7 +1,7 @@
 Etienne Perot
 =============
 
-Montreal, Quebec, Canada
+San Francisco Bay Area, California, United States
 
 [https://perot.me/][Etienne Perot] — <span class="email-replace">etienne (at) perot (dot) me</span> (**PGP**: [974E E250][PGP key])
 
@@ -60,9 +60,8 @@ Employment
 
 Education
 ---------
-* **Bachelor of Science in Software Engineering** (_2009 — present_)  
-  **[McGill University]**, Montreal, Quebec  
-  Expected graduation: Spring 2013
+* **Bachelor of Science in Software Engineering** (_2009 — 2013_)  
+  **[McGill University]**, Montreal, Quebec
 
 * **Baccalaurat Français Scientifique** (_general French Baccalaureate, Sciences stream_) (_2007 — 2009_)  
   **[College Stanislas]**, Montreal, Quebec  
