@@ -33,7 +33,7 @@ build: build-init logo ajax blog css html cv
 
 build-init:
 	mkdir -p "$(BUILD_DIR)"
-	rsync -rqhupXt --exclude=".git" --exclude="*.gz" --delete-after "$(SRC_DIR)/" "$(BUILD_DIR)/"
+	rsync -rqhupXt --exclude=".git" --exclude="*.gz" --exclude="__pycache__" --delete-after "$(SRC_DIR)/" "$(BUILD_DIR)/"
 
 logo:
 	# 16x16 logo is pregenerated, slightly different
@@ -61,7 +61,7 @@ html:
 	while IFS= read -d $$'\0' -r file ; do \
 		echo "Processing $$file"; \
 		res/filefilter.py $(HTML_FILTERS_BEFORE_COMPRESSION) "$$file"; \
-		if htmlcompressor --preserve-php --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --compress-css --compress-js --js-compressor=closure --closure-opt-level=simple < "$$file" > "$$file.compressed"; then \
+		if htmlcompressor --preserve-php --remove-intertag-spaces --simple-doctype --remove-style-attr --remove-script-attr --remove-form-attr --remove-js-protocol --compress-css --compress-js --js-compressor=yui < "$$file" > "$$file.compressed"; then \
 			mv "$$file.compressed" "$$file"; \
 		else \
 			rm -f "$$file.compressed"; \
