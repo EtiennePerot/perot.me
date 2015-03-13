@@ -1,0 +1,84 @@
+https://keybase.io/etienneperot
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://perot.me
+  * I am etienneperot (https://keybase.io/etienneperot) on keybase.
+  * I have a public key with fingerprint 5039 F36E E75C CD6E C444  A007 5CFC 3B88 974E E250
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "client": {
+            "name": "keybase.io node.js client",
+            "version": "0.5.1"
+        },
+        "key": {
+            "fingerprint": "5039f36ee75ccd6ec444a0075cfc3b88974ee250",
+            "host": "keybase.io",
+            "key_id": "5CFC3B88974EE250",
+            "uid": "84d1786574d3f6ceb3180f0f9f9cb100",
+            "username": "etienneperot"
+        },
+        "merkle_root": {
+            "ctime": 1410579023,
+            "hash": "eb1df97160483e6b83085374d0dbcf708a85843eaa9ee3aa5b66c07a71fe54ea8e69d6b38d175f8f8619af90cdb1b2b51b7da8c33ee10248c41d2bacd4cd7bb6",
+            "seqno": 48412
+        },
+        "service": {
+            "hostname": "perot.me",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1410581400,
+    "expire_in": 157680000,
+    "prev": "d70f9e534b0b6d06296a09525f99c8db27a0e0394a1e801b13979a7b20e01e90",
+    "seqno": 16,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+owNCWmg2MUFZJlNZbv+exgAB/v////7/v3/v/////+/////////v37/79772/b/9
+/f23fffQAyePDcxw3JFU0jTQGgCfqNDQGgAmCZoBoCYEZMGhommE0wTTADQANABM
+aAmJkaGRgaATTJkwT0nqbRqb1AGhqYyjRk01Gn6UeoxqYm1GamEY0BponpqMmNBM
+1MaIPUzITaNTE9EehDIyeKBtE2mgDRoT0hjKMmamEwmmnoCNMaJkepp4BQgANNNA
+aGhoNANA0AGgBoAA0ABoAAAyA0GjQ0AAAAAAAAAAAAaAaGgAip6NNMSeUwCj0k0A
+GgaAAAAAAA0AAAAAGgA09QAAAAAANAAAHqABoAAANTKaTVP0n6VNqND1BmmkekGg
+aek0yNANAD1AAAAAPUaPUaAyANNHqGgBkGgAAAAeoABoHqDIDRoBBRRluxFdMaTI
+IZk6WNF0uyll1KHmSIB28DCUiB36ve8hhwwDGL8Ax/b1CwLSJaBXPGq7HScVjXXC
+zMwztNsF8zE7OTALVX9ZL9XvlZuHtYwMBlZozq71JJ9e0hE1HtGlvr6cjJLcbVm7
+HBN+Q3OxgdckbdM8KDaN3xLkySGFEUguST7dCjMtIIyBGYIEZmgEQQUBc203Ckbj
+KfFOul8d2IcGzvp78KdzcBYivZoN4RgXz62L4W9ik1CotDrhz7+mbMTpGHBPJw52
+UJqnNo1ZlwkPTbiGRFx0VeQNJNz0tKZluIovMgBWAQ0yu2ZRIymrnXIsCNccbHEI
+qmegebWgO+JUy4sqlcrryOaaIsQQiGdTkZaAkdCBsCaFCcDNmaKJ9pkBrwsRDzM1
+FN9RGOIZYvuS0rGlVxudgqwytCI6odCRiEOsuLFMhJznG+CjxjJa2ZXAIQzUKpvP
+JwjKFincVigNScI2+gpwQ4aLQLo2nigCn8IUKBus+xvh2j4TgjZItfcAQ7AJfZgD
+mhaVhr/Owmz7aNGkDt0pNzh+Ykr93Xnm5tt2TI/1UJoBSVZMeyR7k0wExIB1XEop
+HAi00AHWi57URrq8Qr/IWdx+NLd5pAFEhgj2QkoMCAhHIrzuCFofn0WsEOFqWhqA
+5gTGUqhokuWZQ2oqq5MJst6Is5yillgYYftk8eG+CPCDMdx1zugd5edTNCAgEKgU
+AmECXFyHVF0sGnymX8ABLiAsnABCcIIjMomXHGA55x0jq3ifGtFVgiPNA2JwNJIB
+UERhSQD9aaYlIzTkE/oMdQi4ElUOlE97253Ysd4kcFyK69kY4NzCa9U3kZogwHfg
+Wu+WcAMSey4VhrboT8yqNQ6CpNlYmkuZBeOIWOiFlNYiCRNMHF1BcRFgDRomJWIi
+dUS5KklxvY9TsJDwgZIFSoKJNWCgyW8WOnioiqCPMyGjXachsvFOW7ELLv6VLBZB
+RiJBXCVTQy0s9SA3/M11oKBDzzqZh4yXihZC4pQsEVX83uOlwegvXIWueIM06UVt
+jpssZJEzawXwjD5zVfFK8NU+Z3SBT6rrmSzCmTuCdV6zpSoOc+HHbs4En/09nQvC
+MEeJPjWsnE5xinlch7VJl4Q5/9RoI7kf6KIqYpnBy/xTxc0i3GvJb0r4CfEtSn7T
+Jflkbm+Rp4rgLPSIN4m1Rzs8PoKN3Byg9RfV3FWPPUuMcPhiYSnmzIijKIQuTXHJ
++yZk11prVsUg+DYeu7Yz/b17S+RsJAApMFKjSRQsE19+o3KENIxNCd9Ybfe35S4Z
+FakT/YIJgEKr9hmKdeYp1BAfKoGFQzcPDsOZDpqKegZe4ez/1mRp+8XckU4UJBu/
+57GA
+=rxmr
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/etienneperot
