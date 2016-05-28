@@ -22,7 +22,7 @@ My [PGP][Pretty Good Privacy] key's fingerprint is `5039 F36E E75C CD6E C444 A00
 
 My [OTR][Off-the-Record Messaging] fingerprint is `A580CE78 A4210989 39235373 35126385 5A2B539D`.
 
-[Site Reliability Engineer]: https://www.google.com/about/jobs/teams/engineering/systems/
+[Site Reliability Engineer]: https://landing.google.com/sre/
 [Google]: https://www.google.com/about/jobs/
 [Etienne Perot CV]: https://perot.me/cv
 [Etienne Perot on LinkedIn]: https://www.linkedin.com/in/etienneperot
