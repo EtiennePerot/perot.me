@@ -141,7 +141,7 @@ Now may be a good time to reassess whether or not Ubuntu's divergence has arrive
 [Mir: An outpost envisioned as a new home]: https://samohtv.wordpress.com/2013/03/04/mir-an-outpost-envisioned-as-a-new-home/
 [Mir specification: Mir on hardware supported by closed source drivers]: https://wiki.ubuntu.com/MirSpec#Mir_on_HW_Supported_By_Closed_Source_Drivers
 [Upstart image]: upstart.png
-[Beta Release of Ubuntu 6.10]: http://www.canonical.com/news/EdgyBeta
+[Beta Release of Ubuntu 6.10]: https://lists.ubuntu.com/archives/ubuntu-announce/2006-September/000090.html
 [Upstart]: http://upstart.ubuntu.com/
 [Chromium OS]: http://dev.chromium.org/chromium-os
 [Upstart Adoption]: https://en.wikipedia.org/wiki/Upstart#Adoption
