@@ -1,6 +1,6 @@
 Hi, I'm Etienne Perot. I like software development, Linux-y things, neat hacks, etc. Sometimes I even [blog about that][perot.me].
 
-I currently work as a [Site Reliability Engineer] at [Google]. The content on this website represent my views, not those of my employer. For more work-related information, you can [read my resume][Etienne Perot CV] or [visit my profile on LinkedIn][Etienne Perot on LinkedIn].
+I currently work as a [Site Reliability Engineer] at [Google] in the San Francisco Bay Area. The content on this website represent my views, not those of my employer. For more work-related information, you can [read my resume][Etienne Perot CV] or [visit my profile on LinkedIn][Etienne Perot on LinkedIn].
 
 I do a fair share of work on [open-source projects][EtiennePerot on GitHub], and I also spend a lot of time helping the [Official Team Fortress Wiki]; you can [find me there][WindPower on Team Fortress Wiki] as well.
 
