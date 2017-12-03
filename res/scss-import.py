@@ -13,7 +13,6 @@ def parseImport(f, m):
 	content = handle.read(-1).strip()
 	handle.close()
 	return content
-	
 
 def parseStyle(f, m):
 	return m.group(1) + scssImport.sub(lambda x : parseImport(f, x), m.group(2)) + '</style>'
