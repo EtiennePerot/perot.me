@@ -51,10 +51,11 @@ def _image_url_wrapper_gifcopy(path, only_path=False, cache_buster=True, dst_col
 			gif_handle = open(gifpath, 'rb')
 			gif_content = gif_handle.read(-1)
 			gif_handle.close()
-			url = 'data:image/gif;base64,' + base64.b64encode(gif_content)
-			if not only_path:
-				url = 'url("%s")' % _scss_mod.escape(url)
-			return _scss_mod.StringValue(url)
+			if len(gif_content) < 16 * 1024:
+				url = 'data:image/gif;base64,' + base64.b64encode(gif_content)
+				if not only_path:
+					url = 'url("%s")' % _scss_mod.escape(url)
+				return _scss_mod.StringValue(url)
 	return __scss_original___image_url(
 		path = path,
 		only_path = only_path,
