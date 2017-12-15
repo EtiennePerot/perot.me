@@ -52,9 +52,10 @@ cv:
 	cat "$(BUILD_DIR)/cv.md" | sed 's/ (at) /@/g' | sed 's/ (dot) /./g' | pandoc --pdf-engine xelatex -V mainfont="Open Sans" -V linkcolor=black -V urlcolor=black -H "$(BUILD_DIR)/cv.sty" -o "$(BUILD_DIR)/cv.pdf"
 
 css:
+	mkdir -p "$(ASSETS_DIR)"
 	while IFS= read -d $$'\0' -r file ; do \
 		echo Processing "$$file"; \
-		res/pyscss-monkeypatch.py -S "`dirname "$$file"`" -I "`dirname "$$file"`" -I "$(BUILD_DIR)" -A "$(ASSETS_DIR)" --static-root "$(BUILD_DIR)" --static-url "$(STATIC_URL)" --assets-url "$(ASSETS_URL)/" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
+		res/pyscss-monkeypatch.py -I "`dirname "$$file"`" -I "$(BUILD_DIR)" --assets-root "$(ASSETS_DIR)" --static-root "$(STATIC_DIR)" --static-url "$(STATIC_URL)" --assets-url "$(ASSETS_URL)" "$$file" > "`echo "$$file" | sed 's/\.scss$$/.css/i'`"; \
 	done < <(find "$(BUILD_DIR)" -name '*.scss' -print0)
 
 html:

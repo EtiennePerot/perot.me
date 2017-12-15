@@ -1,3 +1,4 @@
+@option style:legacy;
 @import "clearfix";
 @import "fonts/open-sans.css";
 
@@ -18,7 +19,7 @@ $sidebarMargin: 2em;
 $sidebarPaddingLeft: 1.5em;
 $sidebarPaddingRight: 1em;
 $contentMaximumWidth: $mainMaximumWidth - $sidebarWidth - $sidebarMargin - (2 * $contentPadding);
-$webIcons: sprite-map("/img/icons/*.png");
+$webIcons: sprite-map("icons/*.png");
 $footerColor: rgba(192, 192, 192, 0.5);
 $linkColor: #634646;
 $linkHoverColorChange: #400000;
@@ -28,7 +29,7 @@ $postGradientColor2: rgba(127, 127, 127, 0.75);
 $postGradientDirection: left;
 
 body {
-	background: inline-image("/img/background.png") $bodyBackground;
+	background: inline-image("background.png") $bodyBackground;
 	font-family: $bodyFontFamily;
 	font-size: $bodyFontSize;
 }
@@ -86,7 +87,7 @@ p code {
 	margin-top: $contentMargin;
 	margin-right: auto;
 	margin-top: $contentMargin;
-	background: inline-image("/img/content-background.png") $contentBackground;
+	background: inline-image("content-background.png") $contentBackground;
 	border-radius: $contentPadding / 4;
 	box-shadow: 0em 0em $contentPadding / 4 0em rgba(0, 0, 0, 0.8) inset;
 	#header {
