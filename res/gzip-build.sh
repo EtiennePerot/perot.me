@@ -24,6 +24,7 @@ while IFS= read -d $'\0' -r file ; do
 done < <(find "$BUILD_DIR" ! -name '*.gz' -type f -print0)
 readarray -t sortedList < <(printf '%s\0' "${fileList[@]}" | sort -z | xargs -0n1)
 
+toCompress=()
 for file in "${sortedList[@]}"; do
 	if [ ! -f "$file.gz" -o "$file.gz" -ot "$file" ]; then
 		# File needs compression
@@ -32,15 +33,20 @@ for file in "${sortedList[@]}"; do
 		if [ -n "$enableCopy" -a -f "$oldBuiltFile" -a -f "$oldBuiltFile.gz" ]; then
 			if [ "$(sha512sum "$file" | cut -d ' ' -f 1)" == "$(sha512sum "$oldBuiltFile" | cut -d ' ' -f 1)" ]; then
 				echo "Copying '$oldBuiltFile.gz' to '$file.gz'"
-				cp "$oldBuiltFile.gz" "$file.gz" || exit 1
+				cp -a "$oldBuiltFile.gz" "$file.gz" || exit 1
+				touch -r "$file" "$file.gz"
 			else
-				echo "Compressing '$file' (old version exists, but differs from current version)"
-				zopfli --i1000 "$file" || exit 1
+				echo "will compress '$file' (old version exists, but differs from current version)"
+				toCompress+=("$file")
 			fi
 		else
-			echo "Compressing '$file' (new file)"
-			zopfli --i1000 "$file" || exit 1
+			echo "Will compress '$file' (new file)"
+			toCompress+=("$file")
 		fi
-		touch -r "$file" "$file.gz"
 	fi
+done
+for file in "${toCompress[@]}"; do
+	echo "Compressing '$file'..."
+	zopfli --i1000 "$file" || exit 1
+	touch -r "$file" "$file.gz"
 done
