@@ -36,7 +36,7 @@ for file in "${sortedList[@]}"; do
 				cp -a "$oldBuiltFile.gz" "$file.gz" || exit 1
 				touch -r "$file" "$file.gz"
 			else
-				echo "will compress '$file' (old version exists, but differs from current version)"
+				echo "Will compress '$file' (old version exists, but differs from current version)"
 				toCompress+=("$file")
 			fi
 		else
