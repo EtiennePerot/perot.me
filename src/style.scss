@@ -1,5 +1,5 @@
 @option style:legacy;
-@import "clearfix";
+@import "clearfix.scss";
 @import "fonts/open-sans.css";
 
 $bodyBackground: #131313;
@@ -80,7 +80,6 @@ p code {
 }
 
 #main {
-	@extend .clearfix;
 	max-width: $mainMaximumWidth;
 	padding: $contentPadding;
 	margin-left: auto;
