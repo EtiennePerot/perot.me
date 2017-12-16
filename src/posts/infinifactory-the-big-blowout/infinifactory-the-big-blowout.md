@@ -10,7 +10,7 @@ I love [Zachtronics]. One of their games is [Infinifactory] ([Trailer][Infinifac
 
 One of the later levels of the game is called "The Big Blowout" (Resistance Campaign → The Heist → The Big Blowout) in which you assemble a bomb-like device that looks like a hollow cube. It's quite difficult to assemble.
 
-I had stopped playing it a while ago, but someone in my Steam friend list recently asked me to see my solution for this puzzle, so I recorded some GIFs using the game's built-in GIF recording feature. This made me re-discover the solution and I thought it was pretty cool so I'm posting it as a blog post.
+I had stopped playing the game a while ago, but someone in my Steam friend list recently asked to see my solution for this puzzle, so I recorded some GIFs using the game's built-in GIF recording feature. This made me re-discover the solution and I thought it was pretty cool so I'm posting it as a blog post.
 
 **Solution stats: 327 cycles, 309 footprint, 386 blocks.** This is not the best. Here's [someone smarter than me doing it in 276 cycles][Better solution].
 
@@ -25,11 +25,11 @@ The final product appears to be a bomb-like cube. It is hollow in the middle and
 ## Overall structure
 
 The level is made of 2 stages linked by a single-block (purple) teleporter.
-This is the largest limiting factor of the level. You cannot transfer more than one block per cycle through the teleporter. Thus, **the main factor that determines the solution's speed is how highly utilized the teleporter cube is**, i.e. the percentage of cycles during which the solution is using the teleporter cube to teleport a block.
+This is the most significant limiting factor of the level. You cannot teleport more than one block per cycle through the teleporter. Thus, **the main factor that determines the solution's speed is how highly utilized the teleporter cube is**, i.e. the percentage of cycles during which the solution is using the teleporter cube to teleport a block.
 
-To this end, the solution tries to build a single long chain of blocks that correspond to exactly one unit of the final product, then pushes this chain all at once through the teleporter. Because all the blocks are aligned in a chain, no cycle is wasted from block to block. **While the chain is being pushed, the next chain is being assembled right above the chain being pushed**. Once the first chain is fully through the teleporter block, the next chain is done assembling and falls right into the conveyor belt which pushes it through the teleporter, etc.
+To this end, the solution tries to build a single long chain of blocks that correspond to exactly one unit of the final product, then pushes this chain all at once through the teleporter. Because all the blocks are aligned in a chain, no cycle is wasted from block to block. **While the chain is being pushed, the next chain is being assembled right above the chain being pushed**. Once the first chain is fully through the teleporter block, the next chain falls right into the conveyor belt and is then pushed it through the teleporter, and so on.
 
-The other side of the teleporter is not very surprising. A redistributor first first lines up all the blocks from the chain in the same form as they arrived in through the teleporter. Once the chain is fully teleported, all blocks at pushed aside simultaneously in order to immediately make room for the next chain coming in through the teleporter. From there, the pushed-aside blocks get split up into multiple assembly lines that progressively weld them together until the final product is produced.
+The other side of the teleporter is not very surprising. A redistributor first first lines up all the blocks from the chain in the same order as they arrived in through the teleporter. Once the chain is fully teleported, all blocks are pushed aside simultaneously in order to immediately make room for the next chain coming in through the teleporter. From there, the pushed-aside blocks get split up into multiple assembly lines that progressively weld everything together until the final product is assembled.
 
 ## Big picture
 
@@ -51,7 +51,7 @@ Re-assembly lines:
 
 ### Initial resource extraction
 
-This section extracts the cubes from the dispending containers at the beginning of the level. It tries to be a non-blocking as possible, which is necessary in order to sustain enough extraction throughput to be able to build a new chain of material by the time the previous one is fully teleported. The main challenge are the black blocks (because the final product requires a lot of them), so the chain-building happens alongside the same line as the one directly taken by the black block dispending container.
+This section extracts the cubes from the dispensing containers at the beginning of the level. It tries to be as non-blocking as possible, which is necessary in order to sustain enough extraction throughput to be able to build a new chain of black blocks by the time the previous one is fully teleported. The main challenge are the black blocks (because the final product requires a lot of them), so the chain-building happens alongside the same line as the one directly taken by the black block dispensing container.
 
 [![Initial resource extraction 1 thumbnail][]][Initial resource extraction 1]
 
@@ -71,7 +71,7 @@ This section buffers a chain of one product's worth of materials, then pushes it
 
 ### Redistributor
 
-This section receives the chain from the teleporter. Once it is fully received, it pushes all blocks aside simultaneously to make room for the next chain to arrive. Blocks are grouped and move into distinct assembly lines.
+This section receives the chain from the teleporter. Once it is fully received, it pushes all blocks aside simultaneously to make room for the next chain to arrive through the teleporter. Blocks are pushed into distinct assembly lines.
 
 [![Redistributor 1 thumbnail][]][Redistributor 1]
 
@@ -139,7 +139,7 @@ Since you're still here, here are a few mesmerizing GIFs from Zachtronics's late
 
 ## Conclusion
 
-I am not affiliated with Zachtronics, I just love their games. You should buy them. They are all available DRM-free on [Steam][Zachtronics on Steam] and [GOG][Zachtronics on GOG] for reasonable prices and they all work on Linux.
+I am not affiliated with Zachtronics, I just love their games. You should buy them. They are available DRM-free on [Steam][Zachtronics on Steam] and [GOG][Zachtronics on GOG] for reasonable prices and they all work on Linux.
 
 [Zachtronics]: http://www.zachtronics.com/
 [Infinifactory]: http://www.zachtronics.com/infinifactory/
