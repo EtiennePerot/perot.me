@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 OLD_BUILD_DIR=old-build
 BUILD_DIR=build
 
@@ -45,8 +47,12 @@ for file in "${sortedList[@]}"; do
 		fi
 	fi
 done
-for file in "${toCompress[@]}"; do
-	echo "Compressing '$file'..."
-	zopfli --i1000 "$file" || exit 1
-	touch -r "$file" "$file.gz"
-done
+if [ "${#toCompress[@]}" -gt 0 ]; then
+	echo "Compressing files..."
+	for file in "${toCompress[@]}"; do
+		echo "$file"
+	done | xargs -r -t -n1 -P"$(nproc --all)" -I'%' zopfli --i1000 '%'
+	for file in "${toCompress[@]}"; do
+		touch -r "$file" "$file.gz"
+	done
+fi
