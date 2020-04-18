@@ -38,7 +38,7 @@ pyscss_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split(i
 if pyscss_subfolder not in sys.path:
 	sys.path.insert(0, pyscss_subfolder)
 
-import scss as _scss_mod
+"""import scss as _scss_mod
 _scss_mod.STATIC_URL = staticUrl or _scss_mod.STATIC_URL
 _scss_mod.ASSETS_URL = assetsUrl or _scss_mod.ASSETS_URL
 
@@ -67,7 +67,7 @@ def _image_url_wrapper_gifcopy(path, only_path=False, cache_buster=True, dst_col
 	)
 
 _scss_mod.__image_url = _image_url_wrapper_gifcopy
-
-from scss import *
+"""
+from scss.tool import main
 if __name__ == '__main__':
 	main()
