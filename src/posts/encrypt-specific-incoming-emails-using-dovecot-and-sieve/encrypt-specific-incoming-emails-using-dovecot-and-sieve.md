@@ -125,6 +125,8 @@ You may also want to apply this to existing emails that you've already received;
 
 Happy encrypting!
 
+**EDIT**: Dovecot now has a built-in [mail-crypt-plugin] which provides at-rest [dcrypt] encryption of email data. The plugin performs both encryption and decryption of the emails on the server side, which means your email server still has to have access to the private keys in order for it to work. By contrast, the solution described in this blog post does not require the server to have access to your GnuPG private key. It can remain locally on your email client. It is possible to use both the plugin and this GnuPG solution together as well. Doing so is a good idea if you're not already doing full-disk-encryption on the filesystem used to store your email, as dcrypt encrypts email headers, while the GnuPG solution doesn't. Though you could achieve the same thing with other solutions, dcrypt makes it safer to back up your email data to a third-party backup facility in a way that doesn't reveal email metadata.
+
 [My PGP key]: https://perot.me/pgp.asc
 [Grepular - Automatically Encrypting all Incoming Email]: https://grepular.com/Automatically_Encrypting_all_Incoming_Email
 [Exim]: http://www.exim.org/
@@ -143,3 +145,5 @@ Happy encrypting!
 [Arch Linux]: https://www.archlinux.org/
 [gpgit]: https://github.com/EtiennePerot/gpgit
 [encmaildir.sh]: https://github.com/EtiennePerot/gpgit/blob/master/encmaildir.sh
+[mail-crypt-plugin]: https://doc.dovecot.org/configuration_manual/mail_crypt_plugin/
+[dcrypt]: https://wiki.dovecot.org/Design/Dcrypt
