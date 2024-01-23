@@ -114,6 +114,8 @@ class Comment:
 class Post:
 	authorMatch = re.compile(r'^\s*(\S(?:.*\S)?)\s*<([^<>]+)>$')
 	linkMatch = re.compile(r'^\[([^]\r\n]+)\]:[ \t]*(\S+)(?:[ \t]+([^\r\n]+))?', re.MULTILINE)
+	videoSrcMatch = re.compile('(<video[^>]+src)="([^"]+)"', re.MULTILINE)
+	videoPosterMatch = re.compile('(<video[^>]+poster)="([^"]+)"', re.MULTILINE)
 	def __init__(self, text, baseUrl, m=None):
 		self.baseUrl = baseUrl
 		self.resourceUrl = postsResourceUrl + '/' + baseUrl
@@ -122,6 +124,8 @@ class Post:
 			m = md()
 		text = text.replace(codeBreakMark, '<!-- -->')
 		text = Post.linkMatch.sub(self._handleLink, text)
+		text = Post.videoSrcMatch.sub(self._handleVideoAttribute, text)
+		text = Post.videoPosterMatch.sub(self._handleVideoAttribute, text)
 		self.content = m.convert(text)
 		self.title = m.Meta['title'][0]
 		self.author = m.Meta['author'][0]
@@ -167,6 +171,11 @@ class Post:
 		if not title:
 			title = '"' + match.group(1) + '"'
 		return '[' + match.group(1) + ']: ' + url + ' ' + title
+	def _handleVideoAttribute(self, match):
+		url = match.group(2)
+		if '/' not in url:
+			url = (self.resourceUrl + '/' + url).replace('//', '/')
+		return match.group(1) + '="' + url + '"'
 	def getTitle(self):
 		return self.title
 	def getAuthor(self):
