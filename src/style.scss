@@ -21,7 +21,7 @@ $sidebarPaddingRight: 1em;
 $contentMaximumWidth: $mainMaximumWidth - $sidebarWidth - $sidebarMargin - (2 * $contentPadding);
 $webIcons: sprite-map("icons/*.png");
 $footerColor: rgba(192, 192, 192, 0.5);
-$linkColor: #634646;
+$linkColor: #955656;
 $linkHoverColorChange: #400000;
 $linkHoverOpacify: 0.5;
 $postGradientColor1: rgba(127, 127, 127, 0);
@@ -185,6 +185,7 @@ p code {
 				display: block;
 				margin-left: auto;
 				margin-right: auto;
+				max-width: $contentMaximumWidth;
 			}
 			.license img {
 				display: inline;
