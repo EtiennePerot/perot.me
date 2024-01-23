@@ -38,7 +38,7 @@ build-init:
 logo:
 	# 16x16 logo is pregenerated, slightly different
 	for w in 24 32 48 64 128 144 256 512; do \
-		inkscape -z -e "$(STATIC_DIR)/logo/logo_$${w}x$${w}.png" -w "$$w" -h "$$w" "$(STATIC_DIR)/logo/logo.svg"; \
+		inkscape -z -o "$(STATIC_DIR)/logo/logo_$${w}x$${w}.png" -w "$$w" -h "$$w" "$(STATIC_DIR)/logo/logo.svg"; \
 	done
 	png2ico "$(BUILD_DIR)/favicon.ico" "$(STATIC_DIR)/logo/logo_16x16.png"
 
@@ -83,7 +83,7 @@ chmod:
 	chmod -R "$(DEPLOY_PERMISSIONS_WRITABLE)" "$(BUILD_DIR)/$(COMMENTS_QUEUE_DIR)" "$(BUILD_DIR)/$(COMMENTS_NONCES_DIR)"
 
 deploy:
-	rsync -rzvvhupXct --exclude=".git" --exclude="$(COMMENTS_QUEUE_DIR)" --exclude="$(COMMENTS_NONCES_DIR)" --exclude-from=".gitignore" --delete-after --progress "$(BUILD_DIR)/" "$(DEPLOY_URL)/"
+	rsync -rzvvhupXct --exclude=".git" --exclude="$(COMMENTS_QUEUE_DIR)" --exclude="$(COMMENTS_NONCES_DIR)" --exclude-from=".gitignore" --progress "$(BUILD_DIR)/" "$(DEPLOY_URL)/"
 	ssh "$(DEPLOY_SSH)" "mkdir -p '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)' && chmod '$(DEPLOY_PERMISSIONS_WRITABLE)' '$(DEPLOY_DIR)/$(COMMENTS_QUEUE_DIR)' '$(DEPLOY_DIR)/$(COMMENTS_NONCES_DIR)'"
 
 clean:
