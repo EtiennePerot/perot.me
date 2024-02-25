@@ -12,6 +12,8 @@ filesystemPostsDir = '../posts'
 blogDirFromPostsDir = '../../blog'
 postsUrl = ''
 postsAbsoluteUrl = 'https://perot.me'
+blogLocale = 'en_US'
+blogName = 'Etienne Perot'
 postsResourceUrl = '/posts-img'
 thumbFilename = 'thumb.png'
 licenseDir = 'licenses'
@@ -40,7 +42,14 @@ if scriptDir:
 
 def md(extensions=[], extension_configs={}, **kwargs):
 	keywordargs = {
-		'extensions': ['codehilite', 'meta', 'sane_lists'] + extensions,
+		'extensions': [
+			'attr_list',
+			'codehilite',
+			'fenced_code',
+			'meta',
+			'sane_lists',
+			'tables',
+		] + extensions,
 		'extensions_configs': {
 			'codehilite': [
 				('style', pygmentsStyle)
@@ -123,6 +132,7 @@ class Post:
 		self.rawText = text
 		if m is None:
 			m = md()
+		text = text.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
 		text = text.replace(codeBreakMark, '<!-- -->')
 		text = Post.linkMatch.sub(self._handleLink, text)
 		text = Post.sourceSrcMatch.sub(self._handleHTMLAttribute, text)
@@ -240,6 +250,23 @@ class Post:
 		return len(self.comments)
 	def getComments(self):
 		return self.comments
+	def toExcerptPost(self):
+		excerpt = extractExcerpt(self.rawText)
+		if excerpt == self.rawText:
+			return self
+		return self.__class__(excerpt, self.baseUrl)
+
+def extractExcerpt(content):
+	excerpt = ''
+	pastBreakmark = False
+	for l in content.split('\n'):
+		if l and Post.linkMatch.search(l): # Link definition; keep this.
+			excerpt +=  l + '\n'
+		pastBreakmark = pastBreakmark or l == breakMark
+		if not pastBreakmark:
+			excerpt +=  l + '\n'
+	return excerpt
+
 
 def substTemplate(template, p, commentsTemplate=None):
 	content = template
@@ -252,9 +279,13 @@ def substTemplate(template, p, commentsTemplate=None):
 	content = content.replace('%mdurl%', html.escape(p.getUrlMd()))
 	content = content.replace('%urlname%', html.escape(p.getBaseUrl()))
 	content = content.replace('%thumbnail%', html.escape(p.getThumb()))
+	content = content.replace('%locale%', html.escape(blogLocale))
+	content = content.replace('%blogname%', blogName)
 	content = content.replace('%blogdir%', html.escape(blogDirFromPostsDir))
 	content = content.replace('%commentsdir%', html.escape(blogDirFromPostsDir + os.sep + 'comments'))
 	content = content.replace('%numcomments%', html.escape(str(p.getNumComments())))
+	if '%excerpt%' in content:
+		content = content.replace('%excerpt%', html.escape(p.toExcerptPost().content))
 	if p.getNumComments() == 0:
 		content = content.replace('%friendlycommentnum%', 'No comments')
 	elif p.getNumComments() == 1:
@@ -314,15 +345,7 @@ if __name__ == '__main__':
 			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '.md', 'r', encoding='utf8')
 			content = f.read(-1)
 			f.close()
-			# Extract excerpt
-			excerpt = ''
-			pastBreakmark = False
-			for l in content.split('\n'):
-				if l and Post.linkMatch.search(l): # Link definition; keep this.
-					excerpt +=  l + '\n'
-				pastBreakmark = pastBreakmark or l == breakMark
-				if not pastBreakmark:
-					excerpt +=  l + '\n'
+			excerpt = extractExcerpt(content)
 			post = Post(excerpt, p)
 			if not post.isStaging():
 				posts.append(post)
@@ -364,7 +387,6 @@ if __name__ == '__main__':
 			f = open(filesystemPostsDir + os.sep + p + os.sep + p + '.md', 'r', encoding='utf8')
 			content = f.read(-1)
 			f.close()
-			content = content.replace(breakMark, '<a name="after-the-break"></a>') # Replace break mark by anchor
 			post = Post(content, p)
 			postInfo['title'] = post.getTitle()
 			postInfo['url'] = post.getUrl()
