@@ -37,7 +37,8 @@ You can end the game (aka your iteration of the simulation) by becoming one of t
 	<source type="video/mp4"  src="talos_principle_ending.mp4" />
 </video>
 
-Instead, if you ascend the tower, you can transcend (by [literally typing the command `/transcend`](https://www.youtube.com/watch?v=-mNa2csiD8E&t=242) in a terminal floating in the heaven-like throne above the clouds at the top of the tower), thereby proving your independence to the simul
+Instead, if you ascend the tower, you can transcend (by [literally typing the command `/transcend`](https://www.youtube.com/watch?v=-mNa2csiD8E&t=242) in a terminal floating in the heaven-like throne above the clouds at the top of the tower), thereby proving your independence to the simulation.
+
 This, along with your successful reasoning ability (as demonstrated by all the puzzles you solved), and your ability to withstand the cognitive dissonance of life (as demonstrated by your dialogue with Milton and exposure to the texts within the archive it guards), are the criteria that the scoring function is looking for before granting you transcendence.
 
 <video controls="" poster="intelligence.webm.jpg" preload="metadata" width="640" height="360">
