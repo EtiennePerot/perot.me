@@ -49,7 +49,7 @@ blog:
 	"$(BUILD_DIR)/blog/blog.py" --make
 
 cv:
-	cat "$(BUILD_DIR)/cv.md" | sed 's/ (at) /@/g' | sed 's/ (dot) /./g' | pandoc --pdf-engine xelatex -V mainfont="Open Sans" -V linkcolor=black -V urlcolor=black -H "$(BUILD_DIR)/cv.sty" -o "$(BUILD_DIR)/cv.pdf"
+	cat "$(BUILD_DIR)/cv.md" | sed 's/ (at) /@/g' | sed 's/ (dot) /./g' | pandoc --pdf-engine lualatex -V mainfont="Open Sans" -V linkcolor=black -V urlcolor=black -H "$(BUILD_DIR)/cv.sty" -o "$(BUILD_DIR)/cv.pdf"
 
 css:
 	mkdir -p "$(ASSETS_DIR)"
